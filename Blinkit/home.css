@@ -1,9 +1,60 @@
-#Blinkit_top{
+#Blinkit_top {
     font-size: 40px;
+    display: inline-block;
+    vertical-align: middle; /* Align with other elements */
 }
-#blink{
-    color:#F8CB46;
+
+#blink {
+    color: #F8CB46;
 }
-#it{
+
+#it {
     color: #318616;
+}
+
+.nav-links {
+    display: inline-block;
+    vertical-align: middle; /* Align with other elements */
+}
+
+.nav-links p {
+    display: inline;
+    margin-right: 20px; /* Adjust as needed for spacing */
+}
+
+.search_id {
+    display: inline-block;
+    vertical-align: middle; /* Align with other elements */
+    margin-left: 120px; /* Adjust as needed for spacing */
+}
+
+.search_id label {
+    font-size: 18px; /* Adjust label font size */
+}
+
+/* Adjust the width and height of the search input */
+#search_id {
+    width: 300px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    font-size: 18px; /* Adjust font size as needed */
+}
+
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.image-container figure {
+    width: calc(14.2857% - 10px); /* Adjust the width as needed */
+    margin-bottom: 20px;
+}
+
+.image-container figure img {
+    width: 100%;
+    height: auto;
+}
+
+.image-container figure figcaption {
+    text-align: center;
 }
