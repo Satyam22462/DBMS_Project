@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change FAQ</title>
+</head>
+<body>
+    <h1>Change FAQ</h1>
+    <form action="changefaqcust.php" method="post">
+        <fieldset>
+            <legend>Change FAQ Information</legend>
+            <label for="oldQuestion">Existing Question:</label><br>
+            <input type="text" id="oldQuestion" name="oldQuestion" required><br><br>
+            <label for="newQuestion">New Question:</label><br>
+            <input type="text" id="newQuestion" name="newQuestion" required><br><br>
+            <label for="newAnswer">New Answer:</label><br>
+            <textarea id="newAnswer" name="newAnswer" rows="4" required></textarea><br><br>
+        </fieldset>
+        <input type="submit" name="submit" value="Submit">
+    </form>
+</body>
+</html>

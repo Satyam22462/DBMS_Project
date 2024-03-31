@@ -50,9 +50,34 @@ if ($conn->connect_error) {
         die(); // Exit script if insertion fails
     }
 
+    // Retrieve the EmployeeID of the inserted employee
+    $employeeID = $stmt->insert_id;
+
+    // If the post is "manager", insert data into the Manager table
+    if ($post == "manager") {
+        $managerEmail = $email; // Assuming manager email is the same as employee email
+        $managerContact = $contact; // Assuming manager contact is the same as employee contact
+
+        // Inserting data into the Manager table
+        $managerStmt = $conn->prepare("INSERT INTO Manager (ManagerEmail, ManagerContact, EmployeeID) VALUES (?, ?, ?)");
+        $managerStmt->bind_param("ssi", $managerEmail, $managerContact, $employeeID);
+        $managerExecVal = $managerStmt->execute();
+
+        if ($managerExecVal === FALSE) {
+            echo "Error inserting into Manager table: " . $conn->error;
+            $managerStmt->close();
+            $stmt->close();
+            $conn->close();
+            die(); // Exit script if insertion fails
+        }
+    }
+
     echo "Registration successful...";
 
-    // Closing prepared statement and database connection
+    // Closing prepared statements and database connection
+    if (isset($managerStmt)) {
+        $managerStmt->close();
+    }
     $stmt->close();
     $conn->close();
 }

@@ -1,7 +1,7 @@
 #Blinkit_top {
     font-size: 40px;
     display: inline-block;
-    vertical-align: middle; /* Align with other elements */
+    vertical-align: middle;
 }
 
 #blink {
@@ -14,29 +14,37 @@
 
 .nav-links {
     display: inline-block;
-    vertical-align: middle; /* Align with other elements */
+    vertical-align: middle;
 }
 
 .nav-links p {
     display: inline;
-    margin-right: 20px; /* Adjust as needed for spacing */
+    margin-right: 20px;
 }
 
 .search_id {
     display: inline-block;
-    vertical-align: middle; /* Align with other elements */
-    margin-left: 120px; /* Adjust as needed for spacing */
+    vertical-align: middle;
+    margin-left: 120px;
 }
 
 .search_id label {
-    font-size: 18px; /* Adjust label font size */
+    font-size: 18px;
 }
 
-/* Adjust the width and height of the search input */
+#cartid {
+    margin-left: 400px;
+    float: right; /* Float the cart link to the right */
+    margin-top: 10px; /* Adjust vertical alignment */
+    background-color: rgb(130, 223, 9);
+    color: whitesmoke;
+    font-size: 30px;
+}
+
 #search_id {
-    width: 300px; /* Adjust width as needed */
-    height: 40px; /* Adjust height as needed */
-    font-size: 18px; /* Adjust font size as needed */
+    width: 300px;
+    height: 40px;
+    font-size: 18px;
 }
 
 .image-container {
@@ -46,7 +54,7 @@
 }
 
 .image-container figure {
-    width: calc(14.2857% - 10px); /* Adjust the width as needed */
+    width: calc(14.2857% - 10px);
     margin-bottom: 20px;
 }
 

@@ -3,7 +3,6 @@ $firstname = $_POST['first_name'];
 $secondname = $_POST['second_name'];
 $lastname = $_POST['last_name'];
 $CustDOB = $_POST['CustDOB'];
-$age = $_POST['age'];
 $street_number = $_POST['street_number'];
 $landmark = $_POST['landmark'];
 $city = $_POST['city'];
@@ -18,7 +17,7 @@ $currentYear = date('Y');
 $yearOfBirth = date('Y', strtotime($CustDOB));
 
 // Calculate age
-$agebyyear = $currentYear - $yearOfBirth;
+$age = $currentYear - $yearOfBirth;
 
 // Establishing connection to MySQL
 $conn = new mysqli("localhost", "root", "", "blinkit");
@@ -27,12 +26,6 @@ if($conn->connect_error){
     die("Connection Failed : ". $conn->connect_error);
 } else {
     if($age <= 0) {
-        echo "Age is invalid";
-        $conn->close();
-        die();
-    }
-    if($agebyyear<=0)
-    {   
         echo "Date of birth is invalid";
         $conn->close();
         die();

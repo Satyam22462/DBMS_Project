@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <fieldset>
+        <!-- ,EmployeePost ENUM("Delivery Man", "Manager", "Packaging Man", "Worker" , "Head Employee") default 'Worker',
+  WorkingStatus ENUM("Busy", "Free" , "on holiday", "Working") default 'Working', -->
+        <legend>Employee FAQ</legend>
+        <form action="faq_for_emp.php" method="post">
+          <h1>What you want to add/change</h1>
+          <p>
+            Select option:
+            <select name="faq" id="faqid" required="required">
+              <option value="add FAQ">add FAQ</option>
+              <option value="change_FAQ">change FAQ</option>
+            </select>
+          </p>
+          <p><input type="submit" name="submit" id="submitid"></p>
+        </form>
+      </fieldset>
+    
+</body>
+</html>
