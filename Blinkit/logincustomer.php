@@ -24,14 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['fname'] = $fname;
             echo "Login successful!";
             // You can redirect the user to another page here if needed
+            echo "<meta http-equiv='refresh' content='3;url=homepage.html'>";
+            $stmt->close();
+            $conn->close();
         } else {
             // Contact does not exist, display error
             echo "Error: Contact not found. Please check your contact number.";
+            $stmt->close();
+            $conn->close();
         }
 
         // Closing prepared statement and database connection
-        $stmt->close();
-        $conn->close();
     }
 }
 ?>

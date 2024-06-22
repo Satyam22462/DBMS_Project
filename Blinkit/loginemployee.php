@@ -17,16 +17,19 @@ if ($conn->connect_error) {
         // Contact exists, perform login actions
         echo "Login successful...";
         // Additional login logic can be added here
+        echo "<meta http-equiv='refresh' content='3;url=For company/homeforemp.html'>";
+        $stmt->close();
+        $conn->close();
     } else {
         // Contact does not exist, display error message
         echo "Invalid contact number. Please try again.";
+        $stmt->close();
+        $conn->close();
     }
 
     // Closing prepared statement and database connection
-    $stmt->close();
-    $conn->close();
 
     // Redirecting to another page after 3 seconds
-    echo "<meta http-equiv='refresh' content='3;url=For company/homeforemp.html'>";
+   
 }
 ?>
