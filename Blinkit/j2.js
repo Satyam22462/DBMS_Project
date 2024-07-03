@@ -1,5 +1,6 @@
-let b=[2,4,5,7,12,15,20];
-let c=b.filter((value,key,index)=>{
-    return index;
-})
-console.log(c);
+setTimeout(()=>{
+    console.log("1");
+},1000);
+setTimeout(()=>{
+    console.log("2");
+},1000);

@@ -1,1 +1,1 @@
-c1.setName("Siddhant");
+var b=4;
