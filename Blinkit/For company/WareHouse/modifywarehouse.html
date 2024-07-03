@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Warehouse</title>
+</head>
+<body>
+    <h1>Modify Warehouse</h1>
+    <form action="modifywarehouse.php" method="post">
+        <fieldset>
+            <legend>Current Warehouse and Branch IDs</legend>
+            <p>
+                <label for="currentWarehouseID">Current Warehouse ID:</label><br>
+                <input type="text" id="currentWarehouseID" name="currentWarehouseID" required>
+            </p>
+            <p>
+                <label for="currentBranchID">Current Branch ID:</label><br>
+                <input type="text" id="currentBranchID" name="currentBranchID" required>
+            </p>
+        </fieldset>
+        <fieldset>
+            <legend>New Warehouse Details</legend>
+            <p>
+                <label for="newStreetNo">New Street Number:</label><br>
+                <input type="text" id="newStreetNo" name="newStreetNo" required>
+            </p>
+            <p>
+                <label for="newLandmark">New Landmark:</label><br>
+                <input type="text" id="newLandmark" name="newLandmark" required>
+            </p>
+            <p>
+                <label for="newCity">New City:</label><br>
+                <input type="text" id="newCity" name="newCity" required>
+            </p>
+            <p>
+                <label for="newState">New State:</label><br>
+                <input type="text" id="newState" name="newState" required>
+            </p>
+            <p>
+                <label for="newPincode">New Pincode:</label><br>
+                <input type="text" id="newPincode" name="newPincode" required pattern="[0-9]{6}">
+                <small>Enter 6-digit pincode</small>
+            </p>
+            <p>
+                <label for="newBranchID">New Branch ID:</label><br>
+                <input type="text" id="newBranchID" name="newBranchID" required>
+            </p>
+            <p>
+                <label for="newContact">New Contact:</label><br>
+                <input type="text" id="newContact" name="newContact" required pattern="[0-9]{10,12}">
+                <small>Enter contact number (10 to 12 digits)</small>
+            </p>
+        </fieldset>
+        <p>
+            <input type="submit" value="Modify Warehouse">
+        </p>
+    </form>
+</body>
+</html>

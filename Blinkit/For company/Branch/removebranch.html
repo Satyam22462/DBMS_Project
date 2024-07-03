@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Branch</title>
+</head>
+<body>
+    <h1>Remove Branch</h1>
+    <form action="removebranch.php" method="post">
+        <fieldset>
+            <legend>Branch and Manager IDs</legend>
+            <p>
+                <label for="branchID">Branch ID:</label><br>
+                <input type="text" id="branchID" name="branchID" required>
+            </p>
+            <p>
+                <label for="managerID">Manager ID:</label><br>
+                <input type="text" id="managerID" name="managerID" required>
+            </p>
+        </fieldset>
+        <p>
+            <input type="submit" value="Remove Branch">
+        </p>
+    </form>
+</body>
+</html>

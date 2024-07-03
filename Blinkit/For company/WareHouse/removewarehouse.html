@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Warehouse</title>
+</head>
+<body>
+    <h1>Remove Warehouse</h1>
+    <form action="removewarehouse.php" method="post">
+        <fieldset>
+            <legend>Current Warehouse Details</legend>
+            <p>
+                <label for="currentWarehouseID">Current Warehouse ID:</label><br>
+                <input type="text" id="currentWarehouseID" name="currentWarehouseID" required>
+            </p>
+            <p>
+                <label for="currentBranchID">Current Branch ID:</label><br>
+                <input type="text" id="currentBranchID" name="currentBranchID" required>
+            </p>
+        </fieldset>
+        <p>
+            <input type="submit" value="Remove Warehouse">
+        </p>
+    </form>
+</body>
+</html>

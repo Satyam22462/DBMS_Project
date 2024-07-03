@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Branch</title>
+</head>
+<body>
+    <h1>Add Branch</h1>
+    <form action="addbranch.php" method="post">
+        <fieldset>
+            <legend>Branch Details</legend>
+            <p>
+                <label for="streetNo">Street Number:</label><br>
+                <input type="text" id="streetNo" name="streetNo" required>
+            </p>
+            <p>
+                <label for="landmark">Landmark:</label><br>
+                <input type="text" id="landmark" name="landmark" required>
+            </p>
+            <p>
+                <label for="city">City:</label><br>
+                <input type="text" id="city" name="city" required>
+            </p>
+            <p>
+                <label for="state">State:</label><br>
+                <input type="text" id="state" name="state" required>
+            </p>
+            <p>
+                <label for="pincode">Pincode:</label><br>
+                <input type="text" id="pincode" name="pincode" required pattern="[0-9]{6}">
+                <small>Enter 6-digit pincode</small>
+            </p>
+            <p>
+                <label for="ManagerID">Manager ID:</label><br>
+                <input type="text" id="ManagerID" name="ManagerID" required>
+            </p>
+            <p>
+                <label for="contact">Contact:</label><br>
+                <input type="text" id="contact" name="contact" required pattern="[0-9]{10,12}">
+                <small>Enter contact number (10 to 12 digits)</small>
+            </p>
+        </fieldset>
+        <p>
+            <input type="submit" value="Add Branch">
+        </p>
+    </form>
+</body>
+</html>
