@@ -1,0 +1,239 @@
+-- Creating Table : 
+
+Drop database blinkit;
+CREATE DATABASE blinkit;
+USE blinkit;
+
+CREATE TABLE Employee(
+EmployeeID INT NOT NULL,
+fname VARCHAR(30) NOT NULL,
+mname VARCHAR(30),
+lname VARCHAR(30) NOT NULL,
+EmployeeAadhar BIGINT NOT NULL UNIQUE,
+EmployeeEmail VARCHAR(50) default 'Not Available',
+EmployeeJoiningDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+EmployeeLeavingDate DATETIME,
+EmployeeSalary DOUBLE Default 15000,
+LastUpdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY(EmployeeID),
+CONSTRAINT IncorrectAadharNumber CHECK (length(EmployeeAadhar) = 12)
+);
+
+CREATE TABLE EmployeeContact(
+EmployeeID INT NOT NULL,
+contact BIGINT NOT NULL,
+PRIMARY KEY(EmployeeID, contact),
+CONSTRAINT Invalid_phone_no CHECK (LENGTH(contact) BETWEEN 10 AND 12),
+FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) on delete cascade on update cascade
+);
+
+CREATE TABLE Manager(
+ManagerID INT NOT NULL,
+ManagerEmail VARCHAR(50) NOT NULL,
+ManagerContact BIGINT NOT NULL,
+EmployeeID INT NOT NULL UNIQUE,
+LastUpdate TIMESTAMP Default current_timestamp on Update current_timestamp,
+PRIMARY KEY(ManagerID),
+CONSTRAINT invalid_Mphone_no CHECK (LENGTH(ManagerContact) BETWEEN 10 AND 12),
+FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) on delete cascade on update cascade
+);
+
+CREATE TABLE Branch(
+BranchID INT NOT NULL,
+streetNo VARCHAR(50) NOT NULL,
+landmark VARCHAR(50) NOT NULL,
+city VARCHAR(20) NOT NULL,
+state VARCHAR(20) NOT NULL,
+pincode INT NOT NULL,
+ManagerID INT NOT NULL UNIQUE,
+PRIMARY KEY(BranchID),
+CONSTRAINT invalid_pincode CHECK (LENGTH(pincode) = 6),
+FOREIGN KEY (ManagerID) REFERENCES Manager(ManagerID) on delete cascade on update cascade
+);
+
+CREATE TABLE BranchContact(
+BranchID INT NOT NULL,
+contact BIGINT NOT NULL,
+PRIMARY KEY(BranchID, contact),
+CONSTRAINT Invalid_Bphone_no CHECK (LENGTH(contact) BETWEEN 10 AND 12),
+FOREIGN KEY (BranchID) REFERENCES Branch(BranchID) on delete cascade on update cascade
+);
+
+CREATE TABLE warehouse(
+WareHouseID INT NOT NULL ,
+streetNo VARCHAR(50) NOT NULL,
+landmark VARCHAR(50) NOT NULL,
+city VARCHAR(20) NOT NULL,
+state VARCHAR(20) NOT NULL,
+pincode INT NOT NULL,
+BranchID INT NOT NULL,
+PRIMARY KEY(WareHouseID),
+CONSTRAINT invalid_Wpincode CHECK (LENGTH(pincode) = 6),
+FOREIGN KEY (BranchID) REFERENCES Branch(BranchID) on delete cascade on update cascade
+);
+
+CREATE TABLE warehouseContact(
+WareHouseID INT NOT NULL,
+contact BIGINT NOT NULL,
+PRIMARY KEY(WareHouseID, contact),
+CONSTRAINT Invalid_Wphone_no CHECK (LENGTH(contact) BETWEEN 10 AND 12),
+FOREIGN KEY (WareHouseID) REFERENCES warehouse(WareHouseID) on delete cascade on update cascade
+);
+
+CREATE TABLE worksAt(
+EmployeeID INT NOT NULL UNIQUE,
+WareHouseID INT ,
+EmployeePost ENUM("Delivery Man", "Manager", "Packaging Man", "Worker" , "Head Employee") default 'Worker',
+WorkingStatus ENUM("Busy", "Free" , "on holiday", "Working") default 'Working',
+PRIMARY KEY(EmployeeID, WareHouseID),
+FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) on delete cascade on update cascade,
+FOREIGN KEY (WareHouseID) REFERENCES warehouse(WareHouseID) on delete cascade on update cascade
+);
+
+CREATE TABLE ProductCategory(
+ProductCatID INT NOT NULL,
+ProductCatName VARCHAR(50) NOT NULL,
+ProductCatDescription VARCHAR(100) default 'Not Available',
+PRIMARY KEY(ProductCatID)
+);
+
+CREATE TABLE Product(
+ProductID INT NOT NULL,
+ProductName VARCHAR(50) NOT NULL,
+ProductPrice DOUBLE NOT NULL,
+ProductDescription VARCHAR(100) default 'Description Not Available',
+BrandName VARCHAR(50) default 'Blinkit',
+ProductCatID INT NOT NULL,
+PRIMARY KEY(ProductID),
+CONSTRAINT product_price_invalid_or_wrong CHECK (ProductPrice>0),
+FOREIGN KEY (ProductCatID) REFERENCES ProductCategory(ProductCatID) on delete cascade on update cascade
+);
+
+CREATE TABLE stores (
+WareHouseID INT NOT NULL,
+ProductID INT NOT NULL,
+StockQty INT NULL default 100,
+ReturnableStatus ENUM("Yes","No"),
+PRIMARY KEY(WareHouseID, ProductID),
+FOREIGN KEY(WareHouseID) REFERENCES warehouse(WareHouseID) on delete cascade on update cascade,
+FOREIGN KEY(ProductID) REFERENCES Product(ProductID) on delete cascade on update cascade,
+CONSTRAINT stock_is_empty CHECK (StockQty >=0)
+);
+
+CREATE TABLE Customer (
+CustomerID INT NOT NULL,
+fname VARCHAR(30) NOT NULL,
+mname VARCHAR(30),
+lname VARCHAR(30) NOT NULL,
+CustomerDOB DATE NOT NULL,
+CustomerAge INT AS (2024- YEAR(CustomerDOB)),
+streetNo VARCHAR(50) NOT NULL,
+landmark VARCHAR(50) NOT NULL,
+city VARCHAR(20) NOT NULL,
+state VARCHAR(20) NOT NULL,
+pincode INT NOT NULL,
+PRIMARY KEY(CustomerID),
+CONSTRAINT invalid_age CHECK (CustomerAge > 0),
+CONSTRAINT invalid_Cpincode CHECK (LENGTH(pincode) = 6)
+); 
+
+CREATE TABLE customerContact(
+CustomerID INT NOT NULL,
+contact BIGINT NOT NULL,
+PRIMARY KEY(CustomerID, contact),
+CONSTRAINT Invalid_Cphone_no CHECK (LENGTH(contact) BETWEEN 10 AND 12),
+FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) on delete cascade on update cascade
+);
+
+CREATE TABLE payment(
+paymentID INT NOT NULL,
+paymentMethod ENUM("Cash On Delivery","Net Banking","UPI", "EMI") default "UPI",
+paymentDateTime TIMESTAMP default current_timestamp,
+PRIMARY KEY(paymentID)
+);
+
+CREATE TABLE Cart(
+CartID INT NOT NULL,
+ProductQty INT NOT NULL,
+TotalCost DOUBLE NOT NULL,
+CustomerID INT NOT NULL UNIQUE,
+LastUpdate TIMESTAMP default current_timestamp on update current_timestamp,
+FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) on delete cascade on update cascade,
+PRIMARY KEY(CartID),
+CONSTRAINT invalid_totalCost CHECK (TotalCost >=0)
+);
+
+CREATE TABLE addsTo(
+CartID INT NOT NULL,
+ProductID INT NOT NULL,
+ModifiedAt TIMESTAMP default current_timestamp on update current_timestamp,
+FOREIGN KEY (CartID) REFERENCES Cart(CartID) on delete cascade on update cascade,
+FOREIGN KEY (ProductID) REFERENCES Product(ProductID) on delete cascade on update cascade
+);
+
+CREATE TABLE Tip(
+TipID INT NOT NULL,
+TipMoney DOUBLE NOT NULL,
+PRIMARY KEY (TipID),
+CONSTRAINT invalid_tip CHECK (TipMoney > 0)
+);
+
+CREATE TABLE orders(
+OrderID INT NOT NULL,
+orderTiming TIMESTAMP default current_timestamp,
+totalPayableAmt DOUBLE NOT NULL,
+orderStatus ENUM("Processing","Confirmed","On the way","Delivered","Cancelled") default "Processing",
+CartID INT NOT NULL,
+TipID INT,
+paymentID INT NOT NULL UNIQUE,
+PRIMARY KEY (OrderID),
+FOREIGN KEY(CartID) REFERENCES Cart(CartID) on delete cascade on update cascade,
+FOREIGN KEY(TipID) REFERENCES Tip(TipID) on delete cascade on update cascade,
+FOREIGN KEY(paymentID) REFERENCES payment(paymentID) on delete cascade on update cascade,
+CONSTRAINT ammt_invalid CHECK (totalPayableAmt > 0)
+);
+
+CREATE TABLE OrderList(
+OrderID INT NOT NULL,
+ProductID INT NOT NULL,
+ProductQty INT NOT NULL,
+ProductPrice DOUBLE NOT NULL,
+Price DOUBLE AS (ProductQty*ProductPrice),
+PRIMARY KEY(OrderID, ProductID),
+FOREIGN KEY(OrderID) REFERENCES Orders(OrderID) on delete cascade on update cascade,
+FOREIGN KEY(ProductID) REFERENCES Product(ProductID) on delete cascade on update cascade,
+CONSTRAINT invalid_product_price CHECK (ProductPrice>0),
+CONSTRAINT invalid_product_Qty CHECK (ProductQty>0)
+);
+
+CREATE TABLE Instructions(
+InstID INT NOT NULL,
+toDate DATE,
+totime TIME,
+customerContact BIGINT,
+otherDelAddress VARCHAR(100),
+otherInstruction VARCHAR(100),
+OrderID INT NOT NULL,
+PRIMARY KEY(InstID),
+FOREIGN KEY (OrderID) REFERENCES Orders(OrderID) on delete cascade on update cascade
+);
+
+CREATE TABLE Ships(
+ShippingID INT NOT NULL,
+ShippingTime TimeStamp default current_timestamp,
+ShippingAddress VARCHAR(100),
+EmployeeID INT NOT NULL,
+InstID INT UNIQUE,
+OrderID INT NOT NULL UNIQUE,
+PRIMARY KEY(ShippingID),
+FOREIGN KEY(EmployeeID) REFERENCES Employee(EmployeeID) on delete cascade on update cascade,
+FOREIGN KEY(InstID) REFERENCES Instructions(InstID) on delete cascade on update cascade,
+FOREIGN KEY(OrderID) REFERENCES Orders(OrderID) on delete cascade on update cascade
+);
+
+CREATE TABLE FAQs(
+ForCustomers VARCHAR(650),
+ForEmployees VARCHAR(650)
+);
+
+
