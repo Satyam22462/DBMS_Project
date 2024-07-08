@@ -516,6 +516,25 @@ public class main {
     }
 
     //........para3
+    private static String determineOrderStatus(String paymentMethod) {
+        switch (paymentMethod) {
+            case "Card":
+            case "UPI":
+            case "Net Banking":
+                return "Confirmed";
+            case "Cash On Delivery":
+                return "On the way";
+            default:
+                return "Processing";
+        }
+    }
+
+    private static boolean shouldScheduleEvent(String orderStatus) {
+        return orderStatus.equals("Confirmed") || orderStatus.equals("On the way") || orderStatus.equals("Processing");
+    }
+
+
+    
     private static void updateOrder(Connection connection, int orderID, String orderStatus) throws SQLException {
         String query = "UPDATE Orders SET orderStatus = ? WHERE OrderID = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -543,7 +562,21 @@ public class main {
 
 
     //...........para4
-
+    private static void clearAddsTo(Connection connection, int cartID) throws SQLException {
+            String deleteQuery = "DELETE FROM addsTo WHERE cartID = ?";
+            try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+                statement.setInt(1, cartID);
+                statement.executeUpdate();
+            }
+        }
+    
+        private static void deleteCart(Connection connection, int cartID) throws SQLException {
+            String updateQuery = "UPDATE cart SET ProductQty = 0, TotalCost = 0 WHERE cartID = ?";
+            try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+                statement.setInt(1, cartID);
+                statement.executeUpdate();
+            }
+        }
 
     //here4..........
 
