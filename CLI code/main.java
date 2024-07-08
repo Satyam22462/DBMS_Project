@@ -162,7 +162,7 @@ public class main {
 //        }
     }
 
-    //........para1
+    
     private static void createCartForCustomer(Connection connection, int customerID) {
         try {
             //inserting data into Cart table
@@ -219,7 +219,7 @@ public class main {
 
     private static List<Integer> availableWarehousesForProduct = new ArrayList<>();
 
-private static void getWarehousesForProduct(Connection connection, int productID) {
+    private static void getWarehousesForProduct(Connection connection, int productID) {
         availableWarehousesForProduct.clear(); // Clear previous warehouse IDs
         try {
             // Query to retrieve warehouse IDs where the product is available
@@ -444,7 +444,7 @@ private static void getWarehousesForProduct(Connection connection, int productID
         }
     }
 
-    //..........para2
+    
     private static int generateOrderID(Connection connection) throws SQLException {
         int orderID = 0;
         try (Statement statement = connection.createStatement()) {
@@ -492,7 +492,8 @@ private static void getWarehousesForProduct(Connection connection, int productID
         }
         return totalAmt;
     }
-private static int generatePaymentID(Connection connection) {
+    
+    private static int generatePaymentID(Connection connection) {
         int startingPaymentID = 100;
         int generatedPaymentID = startingPaymentID;
         try {
@@ -587,7 +588,7 @@ private static int generatePaymentID(Connection connection) {
         }
     }
 
-    //........para3
+    
     private static String determineOrderStatus(String paymentMethod) {
         switch (paymentMethod) {
             case "Card":
@@ -630,7 +631,7 @@ private static int generatePaymentID(Connection connection) {
 
     // conflicting transaction updating cart details after successfull transactions.
 
-public static void clearCart(Connection connection, int cartID) throws SQLException {
+    public static void clearCart(Connection connection, int cartID) throws SQLException {
         //Disable auto-commit mode to start the transaction
         connection.setAutoCommit(false);
 
@@ -661,7 +662,7 @@ public static void clearCart(Connection connection, int cartID) throws SQLExcept
     }
 
 
-    //...........para4
+    
     private static void clearAddsTo(Connection connection, int cartID) throws SQLException {
             String deleteQuery = "DELETE FROM addsTo WHERE cartID = ?";
             try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
@@ -670,7 +671,7 @@ public static void clearCart(Connection connection, int cartID) throws SQLExcept
             }
         }
     
-        private static void deleteCart(Connection connection, int cartID) throws SQLException {
+   private static void deleteCart(Connection connection, int cartID) throws SQLException {
             String updateQuery = "UPDATE cart SET ProductQty = 0, TotalCost = 0 WHERE cartID = ?";
             try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
                 statement.setInt(1, cartID);
@@ -678,7 +679,7 @@ public static void clearCart(Connection connection, int cartID) throws SQLExcept
             }
         }
 
-private static int isProductAvailableInStores(Connection connection, int productID, int warehouseID) {
+    private static int isProductAvailableInStores(Connection connection, int productID, int warehouseID) {
         int stQty = 0;
         try {
             String query = "SELECT SUM(StockQty) AS totalStock FROM stores WHERE ProductID = ? AND WarehouseID = ?";
@@ -714,8 +715,7 @@ private static int isProductAvailableInStores(Connection connection, int product
         }
     }
 
-    //...............para5
-
+    
     private static void addsTo(Connection connection, int custID, int productID, int quantity, int warehouseID) {
         try {
             int cartID = getCartID(connection, custID);
@@ -755,7 +755,7 @@ private static int isProductAvailableInStores(Connection connection, int product
         return cartID;
     }
 
-private static void searchProductByName(Connection connection, String keyword, List<Integer> S_productIDs) throws SQLException {
+    private static void searchProductByName(Connection connection, String keyword, List<Integer> S_productIDs) throws SQLException {
         String query = "SELECT * FROM product WHERE ProductName LIKE ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, "%" + keyword + "%");
@@ -938,7 +938,7 @@ private static void searchProductByName(Connection connection, String keyword, L
         }
     }
 
-private static int getWarehouseID(Connection connection, int custID, int productID) {
+    private static int getWarehouseID(Connection connection, int custID, int productID) {
         int warehouseID = -1;
         int cartID = getCartID(connection, custID);
         try {
@@ -1046,7 +1046,8 @@ private static int getWarehouseID(Connection connection, int custID, int product
             e.printStackTrace();
         }
     }
-private static void updateCartTable(Connection connection, int cartID, int totalQty, double totalCost) {
+    
+    private static void updateCartTable(Connection connection, int cartID, int totalQty, double totalCost) {
         try {
             String updateQuery = "UPDATE cart SET productQty = ?, TotalCost = ? WHERE cartID = ?";
             PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
