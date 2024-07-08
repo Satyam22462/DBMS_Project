@@ -219,7 +219,34 @@ public class main {
 
     private static List<Integer> availableWarehousesForProduct = new ArrayList<>();
 
-   //here1..............
+private static void getWarehousesForProduct(Connection connection, int productID) {
+        availableWarehousesForProduct.clear(); // Clear previous warehouse IDs
+        try {
+            // Query to retrieve warehouse IDs where the product is available
+            String query = "SELECT DISTINCT WareHouseID FROM stores WHERE ProductID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, productID);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Add warehouse IDs to the global list
+            while (resultSet.next()) {
+                int warehouseID = resultSet.getInt("WareHouseID");
+                availableWarehousesForProduct.add(warehouseID);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void printAvailableWarehouses() {
+        System.out.println("Available warehouses for the product:");
+        for (int warehouseID : availableWarehousesForProduct) {
+            System.out.println(warehouseID);
+        }
+    }
 
     private static void after_login(Connection connection, ScannerClass sc, int custID, int pincode) throws SQLException {
         while (true) {
@@ -465,8 +492,24 @@ public class main {
         }
         return totalAmt;
     }
-
-    //here2................
+private static int generatePaymentID(Connection connection) {
+        int startingPaymentID = 100;
+        int generatedPaymentID = startingPaymentID;
+        try {
+            String query = "SELECT MAX(paymentID) AS maxPaymentID FROM payment";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int maxPaymentID = resultSet.getInt("maxPaymentID");
+                generatedPaymentID = Math.max(maxPaymentID + 1, startingPaymentID);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return generatedPaymentID;
+    }
 
     private static void insertPayment(Connection connection, ScannerClass sc, int customerID) {
         try {
@@ -587,7 +630,35 @@ public class main {
 
     // conflicting transaction updating cart details after successfull transactions.
 
-    //here3.........
+public static void clearCart(Connection connection, int cartID) throws SQLException {
+        //Disable auto-commit mode to start the transaction
+        connection.setAutoCommit(false);
+
+        try {
+            //Begin the transaction explicitly
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("START TRANSACTION");
+
+            //Execute the database operations (clearing the addsTo table and deleting the cart)
+            clearAddsTo(connection, cartID);
+            deleteCart(connection, cartID);
+
+            //If no exceptions occurred, commit the transaction
+            connection.commit();
+        } catch (SQLException e) {
+            //Log the exception or handle it as needed
+            e.printStackTrace();
+
+            //Rollback the transaction
+            connection.rollback();
+
+            //Re-throw the exception to the caller
+            throw e;
+        } finally {
+            //Enable auto-commit mode to return to default behavior
+            connection.setAutoCommit(true);
+        }
+    }
 
 
     //...........para4
@@ -607,7 +678,27 @@ public class main {
             }
         }
 
-    //here4..........
+private static int isProductAvailableInStores(Connection connection, int productID, int warehouseID) {
+        int stQty = 0;
+        try {
+            String query = "SELECT SUM(StockQty) AS totalStock FROM stores WHERE ProductID = ? AND WarehouseID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, productID);
+            statement.setInt(2, warehouseID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int stockQuantity = resultSet.getInt("totalStock");
+                stQty = stockQuantity;
+            } else {
+                System.out.println("Product not found in the specified warehouse.");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stQty;
+    }
 
     private static void updateStoresStock(Connection connection, int productID, int quantity, int warehouseID) {
         try {
@@ -664,7 +755,26 @@ public class main {
         return cartID;
     }
 
-    //here5..................
+private static void searchProductByName(Connection connection, String keyword, List<Integer> S_productIDs) throws SQLException {
+        String query = "SELECT * FROM product WHERE ProductName LIKE ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, "%" + keyword + "%");
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            int productID = resultSet.getInt("ProductID");
+            S_productIDs.add(productID);
+            String productName = resultSet.getString("ProductName");
+            double productPrice = resultSet.getDouble("ProductPrice");
+            String productDescription = resultSet.getString("ProductDescription");
+            String brandName = resultSet.getString("Brandname");
+//            int productCatID = resultSet.getInt("ProductCatID");
+            System.out.printf("ProductID: %d  | Product Name: %s  | Price: %.2f | Description: %s | Brand: %s |%n",
+                    productID, productName, productPrice, productDescription, brandName);
+//            System.out.printf("ProductID: %d | Product Name: %s | Price: %.2f | Description: %s | Brand: %s | CategoryID: %d |%n",
+//                    productID, productName, productPrice, productDescription, brandName, productCatID);
+        }
+        statement.close();
+    }
     private static void displayProductCategories(Connection connection, List<Integer> productcatIDs) {
         try {
             String query = "SELECT * FROM ProductCategory";
@@ -828,7 +938,41 @@ public class main {
         }
     }
 
-    //here6...............
+private static int getWarehouseID(Connection connection, int custID, int productID) {
+        int warehouseID = -1;
+        int cartID = getCartID(connection, custID);
+        try {
+            String query = "SELECT s.warehouseID " +
+                    "FROM addsTo a " +
+                    "JOIN stores s ON a.productID = s.productID " +
+                    "WHERE a.cartID = ? AND a.productID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, cartID);
+            statement.setInt(2, productID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                warehouseID = resultSet.getInt("warehouseID");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return warehouseID;
+    }
+
+    private static boolean isProductInCart(Connection connection, int customerID, int productID) throws SQLException {
+        String query = "SELECT COUNT(*) FROM addsTo WHERE cartID IN (SELECT cartID FROM cart WHERE CustomerID = ?) AND productID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, customerID);
+        statement.setInt(2, productID);
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        resultSet.close();
+        statement.close();
+        return count > 0;
+    }
 
     private static int getProductQuantityInCart(Connection connection, int customerID, int productID, int warehouseID) {
         try {
@@ -902,8 +1046,24 @@ public class main {
             e.printStackTrace();
         }
     }
-
-    //here7.............
+private static void updateCartTable(Connection connection, int cartID, int totalQty, double totalCost) {
+        try {
+            String updateQuery = "UPDATE cart SET productQty = ?, TotalCost = ? WHERE cartID = ?";
+            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+            updateStatement.setInt(1, totalQty);
+            updateStatement.setDouble(2, totalCost);
+            updateStatement.setInt(3, cartID);
+            int rowsAffected = updateStatement.executeUpdate();
+            if (rowsAffected > 0) {
+//                System.out.println("Cart with ID " + cartID + " updated successfully.");
+            } else {
+                System.out.println("Failed to update cart with ID " + cartID);
+            }
+            updateStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 
