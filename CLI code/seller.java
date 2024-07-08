@@ -237,6 +237,42 @@ public class seller {
     }
 
 //    ..........para2
+    private static int getNextProductCatID(Connection connection) throws SQLException {
+        String query = "SELECT MAX(ProductCatID) FROM ProductCategory";
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getInt(1) + 1;
+        }
+        return 1; // If no record found, start from 1
+    }
+    private static void printProductCategories(Connection connection) {
+        try {
+            // Query to select all rows from ProductCategory table
+            String query = "SELECT * FROM ProductCategory";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Print the header
+            System.out.println("Product Category ID | Product Category Name | Product Category Description");
+            System.out.println("--------------------------------------------------------------------------");
+
+            // Print each row of the result set
+            while (resultSet.next()) {
+                int productCatID = resultSet.getInt("ProductCatID");
+                String productCatName = resultSet.getString("ProductCatName");
+                String productCatDescription = resultSet.getString("ProductCatDescription");
+
+                // Print the row
+                System.out.printf("%-20s  | %-20s  | %-30s%n", productCatID, productCatName, productCatDescription);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static void add_product(Connection connection, ScannerClass sc, int managerID) {
         sc.readString();
@@ -435,7 +471,35 @@ public class seller {
     }
 
     //..........para3
-
+    private static void remove_product_byID(Connection connection, ScannerClass sc){
+        try{
+            printProducts(connection);
+            System.out.println("Enter the ID of the Product you want to remove:");
+            int productID = sc.readInt();
+            sc.readString();
+            System.out.println("Are you sure you want to remove this product ? (yes/no)");
+            String confirmation = sc.readString().trim().toLowerCase();
+            if (confirmation.equals("yes")) {
+                deleteProductByID(connection, productID);
+            } else {
+                System.out.println("Product category removal cancelled.");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void deleteProductByID(Connection connection, int productID) throws SQLException{
+        String deleteProductQuery = "DELETE FROM Product WHERE ProductID = ?";
+        PreparedStatement deleteProductStatement = connection.prepareStatement(deleteProductQuery);
+        deleteProductStatement.setInt(1, productID);
+        int productDeleted = deleteProductStatement.executeUpdate();
+        deleteProductStatement.close();
+        if (productDeleted > 0) {
+            System.out.println("Product removed successfully!");
+        } else {
+            System.out.println("Failed to remove product !");
+        }
+    }
 
 
 
