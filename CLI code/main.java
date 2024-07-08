@@ -163,6 +163,24 @@ public class main {
     }
 
     //........para1
+    private static void createCartForCustomer(Connection connection, int customerID) {
+        try {
+            //inserting data into Cart table
+            String insertCartQuery = "INSERT INTO Cart (cartID, customerID, productQty, TotalCost) VALUES (?, ?, 0, 0)";
+            PreparedStatement insertCartStatement = connection.prepareStatement(insertCartQuery);
+            insertCartStatement.setInt(1, customerID); // Set the cartID as customerID
+            insertCartStatement.setInt(2, customerID); // Set the customerID
+            int rowsAffected = insertCartStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Cart created successfully for CustomerID: " + customerID);
+            } else {
+                System.out.println("Cart creation failed for CustomerID: " + customerID);
+            }
+            insertCartStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static void login(Connection connection, ScannerClass sc) {
         int attempts = 0;
@@ -400,6 +418,17 @@ public class main {
     }
 
     //..........para2
+    private static int generateOrderID(Connection connection) throws SQLException {
+        int orderID = 0;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT MAX(OrderID) AS maxOrderID FROM Orders");
+            if (resultSet.next()) {
+                orderID = resultSet.getInt("maxOrderID") + 1;
+            }
+        }
+        return orderID;
+    }
+    
     private static void insertOrder(Connection connection, ScannerClass sc, int custID, int paymentID, String paymentMethod) throws SQLException {
         //retrieving orderId using custID(custID>cartID>totalCartAmt cartID>orderID)
         int cartID = getCartID(connection, custID);
