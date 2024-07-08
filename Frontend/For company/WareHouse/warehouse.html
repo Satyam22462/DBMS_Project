@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Management</title>
+</head>
+<body>
+    <h1>Warehouse Management</h1>
+    <fieldset>
+        <legend>Warehouse Action</legend>
+        <form action="warehouse.php" method="post">
+            <label for="action">Select Action:</label><br>
+            <select name="work" id="action">
+                <option value="add">Add Warehouse</option>
+                <option value="modify">Modify Warehouse</option>
+                <option value="remove">Remove Warehouse</option>
+            </select>
+            <br><br>
+            <input type="submit" name="submit" value="Proceed">
+        </form>
+    </fieldset>
+</body>
+</html>

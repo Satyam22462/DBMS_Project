@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage For employee</title>
+  </head>
+  <body>
+    <fieldset>
+      <legend>Employee Details Detail</legend>
+      <form action="homeforemp.php" method="post">
+        <h1>What you want to add/change</h1>
+        <p>
+          Select work:
+          <select name="work" id="workid" required="required">
+            <option value="FAQ_Cust">FAQ for customers</option>
+            <option value="FAQ_Emp">FAQ for employee</option>
+            <option value="stores">Stores</option>
+            <option value="product">Product</option>
+            <option value="productcatergory">Product Category</option>
+            <option value="warehouse">Warehouse</option>
+            <option value="branch">Branch</option>
+          </select>
+        </p>
+        <p><input type="submit" name="submit" id="submitid"></p>
+      </form>
+    </fieldset>
+  </body>
+</html>

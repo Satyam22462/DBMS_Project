@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Results</title>
+    <!-- Add any necessary CSS stylesheets -->
+    <style>
+      .add-button,
+      .remove-button {
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        margin-left: 10px;
+      }
+
+      .add-button:hover,
+      .remove-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Search Results</h1>
+    <div id="searchResultsContainer">
+      <!-- Search results will be displayed here dynamically -->
+    </div>
+
+    <script>
+      function fetchSearchResults() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const results = JSON.parse(urlParams.get("results"));
+
+        if (results && results.length > 0) {
+          displaySearchResults(results);
+        } else {
+          document.getElementById("searchResultsContainer").innerHTML =
+            "<p>No results found.</p>";
+        }
+      }
+
+      function displaySearchResults(results) {
+        const searchResultsContainer = document.getElementById(
+          "searchResultsContainer"
+        );
+        searchResultsContainer.innerHTML = "";
+
+        results.forEach((result) => {
+          const resultElement = document.createElement("div");
+          resultElement.innerHTML = `
+                    <h2>Product Details</h2>
+                    <p>Product Name: ${result.ProductName}</p>
+                    <p>Product Description: ${result.ProductDescription}</p>
+                    <p>Price: ${result.ProductPrice}</p>
+                    <p>Category Name: ${result.ProductCatName}</p>
+                    <p>Category Description: ${result.ProductCatDescription}</p>
+                    <p>Stock Quantity: ${result.StockQty}</p>
+                    <p>Returnable: ${result.ReturnableStatus}</p>
+                    <button class="add-button" onclick="addToCart(${result.ProductID})">+</button>
+                    <!-- You can add more information or formatting here -->
+                `;
+          searchResultsContainer.appendChild(resultElement);
+        });
+      }
+
+      function addToCart(productId) {
+        // Redirect to cart.html and pass the product ID as a query parameter
+        window.location.href = `../For Company/Cart/cart.html?productId=${productId}`;
+      }
+
+      window.onload = fetchSearchResults;
+    </script>
+  </body>
+</html>
