@@ -639,7 +639,6 @@ private static void addStockToWarehouse(Connection connection, int productID, in
         }
     }
 
-    //..........para3
     private static void remove_product_byID(Connection connection, ScannerClass sc){
         try{
             printProducts(connection);
