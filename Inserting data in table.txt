@@ -1,0 +1,332 @@
+
+INSERT INTO Employee (EmployeeID, fname, mname, lname, EmployeeAadhar, EmployeeEmail, EmployeeLeavingDate, EmployeeSalary)
+VALUES
+    (1, 'Rahul', 'Kumar', 'Sharma', 123456789012, 'rahul@example.com', NULL, 25000),
+    (2, 'Priya', 'Singh', 'Yadav', 234567890123, 'priya@example.com', NULL, 36000),
+    (3, 'Amit', 'Kumar', 'Verma', 345678901234, 'amit@example.com', NULL, 32000),
+    (4, 'Sneha', 'Rani', 'Patel', 456789012345, 'sneha@example.com',  NULL, 120000);
+INSERT INTO Employee (EmployeeID, fname, lname, EmployeeAadhar, EmployeeJoiningDate)
+VALUES
+	(5, 'Rajesh', 'Kumar', 567890123456, '2023-04-20'),
+    (6, 'Anjali', 'Gupta', 678901234567, '2023-05-25'),
+    (7, 'Vikas', 'Singh', 789012345678, '2023-06-30'),
+    (8, 'Sunita', 'Yadav', 890123456789, '2023-07-01');
+INSERT INTO Employee (EmployeeID, fname, mname, lname, EmployeeAadhar, EmployeeEmail, EmployeeJoiningDate, EmployeeLeavingDate, EmployeeSalary)
+VALUES
+	(9, 'Alok', 'Kumar', 'Sharma', 901234567890, 'alok@example.com', '2023-08-05', '2024-03-12',20000),
+    (10, 'Pooja', 'Devi', 'Mishra', 123123123123, 'pooja@example.com', '2023-09-10', NULL, 20000);
+    
+    
+INSERT INTO EmployeeContact (EmployeeID, contact)
+VALUES
+    (1, 9876543210),
+    (1, 9876543211),
+    (2, 8765432109),
+    (3, 9876543211),
+    (3, 7654321099),
+    (4, 6543210987),
+    (5, 5432109876),
+    (6, 4321098765),
+    (7, 3210987654),
+    (8, 2109876543),
+    (9, 1098765432),
+    (10, 1234567890),
+    (10, 1234567891);
+
+
+INSERT INTO Manager (ManagerID, ManagerEmail, ManagerContact, EmployeeID)
+VALUES
+    (1001, 'manager1@example.com', 9876543210, 1),
+    (1002, 'manager2@example.com', 8765432109, 2),
+    (1003, 'manager3@example.com', 7654321098, 4),
+    (1004, 'manager4@example.com', 6543210987, 6),
+    (1005, 'manager5@example.com', 5432109876, 10);
+    
+
+INSERT INTO Branch (BranchID, streetNo, landmark, city, state, pincode, ManagerID)
+VALUES
+    (1201, '123', 'Main Street', 'Mumbai', 'Maharashtra', 400001, 1001),
+    (1202, '456', 'Central Avenue', 'Delhi', 'Delhi', 110001, 1004),
+    (1203, '789', 'Park Road', 'Bangalore', 'Karnataka', 560001, 1002),
+    (1204, '1011', 'High Street', 'Kolkata', 'West Bengal', 700001, 1003),
+    (1205, '1213', 'Market Street', 'Chennai', 'Tamil Nadu', 600001, 1005);
+
+
+INSERT INTO BranchContact (BranchID, contact)
+VALUES
+    (1201, 9876543210),
+    (1201, 9876543211),
+    (1201, 8765432109),
+    (1201, 7654321098),
+    (1202, 7654321099),
+    (1202, 6543210987),
+    (1202, 5432109876),
+    (1202, 5432109877),
+    (1203, 4321098765),
+    (1203, 3210987654),
+    (1203, 2109876543),
+    (1204, 1098765432),
+    (1205, 1234567890),
+    (1205, 1234567891);
+
+
+INSERT INTO warehouse
+VALUES
+    (11101, '123', 'Main Street', 'Mumbai', 'Maharashtra', 400001, 1201),
+    (11102, '456', 'Central Avenue', 'Delhi', 'Delhi', 110001, 1201),
+    (11103, '789', 'Park Road', 'Bangalore', 'Karnataka', 560001, 1201),
+    (11104, '1011', 'High Street', 'Kolkata', 'West Bengal', 700001, 1201),
+    (11105, '1213', 'Market Street', 'Chennai', 'Tamil Nadu', 600001, 1202),
+    (11106, '1415', 'Broadway', 'Hyderabad', 'Telangana', 500001, 1202),
+    (11107, '1617', 'Park Avenue', 'Pune', 'Maharashtra', 411001, 1202),
+    (11108, '1819', 'Lake Street', 'Ahmedabad', 'Gujarat', 380001, 1202),
+    (11109, '2021', 'Oak Street', 'Jaipur', 'Rajasthan', 302001, 1203),
+    (11110, '2223', 'Elm Avenue', 'Lucknow', 'Uttar Pradesh', 226001, 1203),
+    (11111, '2425', 'Maple Street', 'Patna', 'Bihar', 800001, 1203),
+    (11112, '2627', 'Pine Avenue', 'Kochi', 'Kerala', 682001, 1204),
+    (11113, '2829', 'Cedar Street', 'Guwahati', 'Assam', 781001, 1204),
+    (11114, '3031', 'Willow Avenue', 'Bhopal', 'Madhya Pradesh', 462001, 1205),
+    (11115, '3233', 'Birch Street', 'Raipur', 'Chhattisgarh', 492001, 1205);
+    
+
+INSERT INTO warehouseContact
+VALUES
+    (11101, 9876543210),
+    (11101, 9876543211),
+    (11102, 8765432109),
+    (11103, 7654321098),
+    (11103, 7654321099),
+    (11104, 6543210987),
+    (11105, 5432109876),
+    (11105, 5432109877),
+    (11106, 4321098765),
+    (11107, 3210987654),
+    (11108, 2109876543),
+    (11109, 1098765432),
+    (11110, 1234567890),
+    (11111, 1234567891),
+    (11112, 1234567892),
+    (11113, 1234567893),
+    (11113, 1234567890),
+    (11114, 1234567894),
+    (11115, 1234567895);
+    
+
+INSERT INTO worksAt (EmployeeID, WareHouseID, EmployeePost, WorkingStatus)
+VALUES
+    (1, 11101, 'Head Employee', 'Working'),
+    (2, 11101, 'Delivery Man', 'Busy'),
+    (3, 11103, 'Packaging Man', 'Free'),
+    (4, 11104, 'Delivery Man', 'on holiday'),
+    (5, 11105, 'Head Employee', 'Working'),
+    (6, 11101, 'Manager', 'on holiday'),
+    (7, 11105, 'Manager', 'Busy'),
+    (9, 11105, 'Worker', 'Working'),
+    (8, 11105, 'Packaging Man', 'Free'),
+    (10, 11110, 'Delivery Man', 'Free');
+    
+    
+INSERT INTO ProductCategory (ProductCatID, ProductCatName, ProductCatDescription)
+VALUES
+    (15001, 'Electronics', 'Electronic devices and gadgets'),
+    (15002, 'Clothing', 'Apparel and fashion accessories'),
+    (15003, 'Books', 'Literature and educational materials'),
+    (15004, 'Furniture', 'Home and office furniture'),
+    (15005, 'Toys', 'Childrens toys and games');
+    
+
+INSERT INTO Product (ProductID, ProductName, ProductPrice, ProductDescription, BrandName, ProductCatID)
+VALUES
+    (1, 'Smartphone', 9999.99, 'The latest smartphone model', 'Samsung', 15001),
+    (2, 'T-shirt', 29.99, 'Comfortable cotton T-shirt', 'Nike', 15002),
+    (3, 'Harry Potter Book', 19.99, 'First book in the Harry Potter series', 'Scholastic', 15003),
+    (4, 'Office Chair', 199.99, 'Ergonomic office chair', 'Herman Miller', 15004),
+    (5, 'Lego Set', 49.99, 'Building blocks for creative play', 'LEGO', 15005),
+    (6, 'Laptop', 1499.99, 'Powerful laptop for work and entertainment', 'Dell', 15001),
+    (7, 'Jeans', 39.99, 'Classic denim jeans', 'Levis', 15002),
+    (8, 'Cookbook', 12.99, 'Collection of delicious recipes', 'Penguin Random House', 15003),
+    (9, 'Desk Lamp', 29.99, 'Adjustable desk lamp for study or work', 'IKEA', 15004),
+    (10, 'Board Game', 24.99, 'Fun family board game', 'Hasbro', 15005);
+    
+
+INSERT INTO stores (WareHouseID, ProductID, StockQty, ReturnableStatus)
+VALUES
+    (11101, 1, 50, 'Yes'),
+    (11101, 2, 100, 'No'),
+    (11102, 3, 0, 'Yes'),
+    (11102, 4, 150, 'Yes'),
+    (11103, 5, 200, 'No'),
+    (11103, 6, 120, 'Yes'),
+    (11104, 7, 80, 'No'),
+    (11104, 8, 90, 'Yes'),
+    (11105, 9, 110, 'Yes'),
+    (11113, 6, 120, 'Yes'),
+    (11113, 7, 120, 'Yes'),
+    (11114, 7, 80, 'No'),
+    (11114, 8, 90, 'Yes'),
+    (11115, 9, 100, 'Yes'),
+    (11115, 10, 70, 'No');
+    
+
+INSERT INTO Customer (CustomerID, fname, mname, lname, CustomerDOB, streetNo, landmark, city, state, pincode)
+VALUES
+    (1, 'Rahul', NULL, 'Gupta', '1992-04-15', '23 Nehru Road', 'Near Park', 'Mumbai', 'Maharashtra', 400001),
+    (2, 'Priya', 'Rani', 'Singh', '1988-07-20', '56 Gandhi Nagar', 'Next to School', 'Delhi', 'Delhi', 110001),
+    (3, 'Amit', 'Kumar', 'Sharma', '1975-02-10', '789 Tagore Street', 'Opposite Mall', 'Kolkata', 'West Bengal', 700001),
+    (4, 'Anita', NULL, 'Verma', '2001-11-25', '101 Patel Lane', 'Beside Library', 'Ahmedabad', 'Gujarat', 380001),
+    (5, 'Suresh', 'Kumar', 'Yadav', '1990-09-30', '202 Reddy Street', 'Near Theater', 'Hyderabad', 'Telangana', 500001),
+	 (6, 'Meera', NULL, 'Patel', '1998-12-05', '34 Modi Road', 'Near Market', 'Pune', 'Maharashtra', 411001),
+    (7, 'Rajesh', 'Singh', 'Yadav', '1982-03-18', '67 Gandhi Chowk', 'Opposite Temple', 'Lucknow', 'Uttar Pradesh', 226001),
+    (8, 'Kavita', 'Kumari', 'Gupta', '1970-09-21', '89 Gandhi Nagar', 'Next to Park', 'Jaipur', 'Rajasthan', 302001),
+    (9, 'Vikram', 'Kumar', 'Jha', '2000-05-15', '12 Sardar Street', 'Beside Hospital', 'Chennai', 'Tamil Nadu', 600001),
+    (10, 'Shivani', NULL, 'Sharma', '1995-07-30', '45 Nehru Lane', 'Near Stadium', 'Bengaluru', 'Karnataka', 560001);
+
+
+INSERT INTO customerContact (CustomerID, contact) VALUES
+    (1, 9876543210),
+    (2, 9876543211),
+    (3, 9876543212),
+    (4, 9876543213),
+    (5, 9876543214),
+    (6, 9876543215),
+    (7, 9876543216),
+    (8, 9876543217),
+    (9, 9876543218),
+    (10, 9876543219),
+    (1, 9876543220),
+    (2, 9876543221),
+    (3, 9876543222),
+    (1, 9876543223),
+    (2, 9876543224),
+    (3, 9876543225),
+    (4, 9876543226),
+    (8, 9876543227),
+    (9, 9876543228),
+    (10, 9876543229);
+    
+
+INSERT INTO payment (paymentID, paymentMethod, paymentDateTime) VALUES
+    (1, 'Cash On Delivery', '2024-03-15 10:30:00'),
+    (2, 'Net Banking', '2024-03-16 12:45:00'),
+    (3, 'UPI', '2024-03-17 14:20:00'),
+    (4, 'EMI', '2024-03-18 09:15:00'),
+    (5, 'Cash On Delivery', '2024-03-19 11:10:00'),
+     (8, 'EMI', '2024-03-22 13:25:00'),
+    (9, 'UPI', '2024-03-23 15:30:00'),
+    (10, 'Cash On Delivery', '2024-03-24 10:50:00');
+INSERT INTO payment (paymentID, paymentMethod) VALUES    
+    (6, 'UPI'),
+    (7, 'Net Banking');
+
+
+INSERT INTO Cart (CartID, ProductQty, TotalCost, CustomerID) VALUES
+    (1001, 3, 2000, 1),
+    (1002, 1, 30, 2),
+    (1003, 2, 36, 3),
+    (1004, 3, 1500, 4),
+    (1005, 5, 266, 5),
+    (1006, 3, 1200, 6),
+    (1007, 6, 1400, 7),
+    (1008, 7, 5221, 8),
+    (1009, 2, 300, 9),
+    (1010, 1, 320, 10);
+    
+    
+INSERT INTO addsTo (CartID, ProductID) VALUES
+    (1001, 1),
+    (1001, 2),
+    (1002, 1),
+    (1002, 4),
+    (1003, 5),
+    (1004, 6),
+    (1005, 7),
+    (1005, 8),
+    (1006, 9),
+    (1007, 10);
+    
+    
+INSERT INTO Tip (TipID, TipMoney) VALUES
+    (1, 50.00),
+    (2, 100.00),
+    (3, 75.00),
+    (4, 25.00),
+    (5, 150.00),
+    (6, 80.00),
+    (7, 120.00),
+    (8, 200.00),
+    (9, 90.00),
+    (10, 60.00); 
+    
+    
+INSERT INTO orders (OrderID, totalPayableAmt, CartID, TipID, paymentID) VALUES
+    (10011, 25250.00, 1001, 1, 1),
+    (10012, 33300.00, 1002, 2, 2),
+    (10013, 150.00, 1001, 3, 3),
+    (10014, 400.00, 1004, 4, 4),
+    (10015, 200.00, 1005, 5, 5),
+    (10016, 350.00, 1003, 6, 6),
+    (10017, 280.00, 1007, 7, 7),
+    (10018, 500.00, 1008, 8, 8);
+INSERT INTO orders (OrderID, totalPayableAmt, CartID, paymentID) VALUES
+    (10019, 320.00, 1008, 9),
+    (10020, 270.00, 1010, 10);
+    
+
+INSERT INTO OrderList (OrderID, ProductID, ProductQty, ProductPrice) VALUES
+    (10011, 1, 2, 9999.99),
+    (10011, 2, 1, 29.99),
+    (10012, 1, 3, 9999.99),
+    (10012, 4, 2, 199.99),
+    (10013, 5, 1, 49.99),
+    (10014, 6, 4, 1499.99),
+    (10015, 7, 2, 39.99),
+    (10016, 8, 3, 12.99),
+    (10017, 9, 1, 29.99),
+    (10018, 10, 2, 24.99);
+
+
+INSERT INTO Instructions (InstID, toDate, OrderID) VALUES
+    (1, '2024-03-05', 10011),
+    (3, '2024-03-07', 10013);
+INSERT INTO Instructions (InstID, totime, OrderID) VALUES
+    (2, '16:45:00', 10012),
+    (4, '10:00:00', 10014);
+INSERT INTO Instructions (InstID, customerContact, OrderID) VALUES
+	(6, 9876543215, 10016);
+INSERT INTO Instructions (InstID, otherDelAddress, OrderID) VALUES
+    (8, '234 Street, Landmark8, City8, State8, Pincode8', 10018);
+INSERT INTO Instructions (InstID, otherInstruction, OrderID) VALUES
+	(7, 'Do not stack', 10017),
+    (9, 'Handle with gloves', 10019);
+INSERT INTO Instructions VALUES
+    (5, '2024-03-09', '18:20:00', 9876543214, '345 Street, Landmark5, City5, State5, Pincode5', 'Call before delivery', 10015),
+    (10, '2024-03-14', '17:10:00', 9876543219, '890 Street, Landmark10, City10, State10, Pincode10', 'Deliver during daytime', 10020);
+
+
+INSERT INTO Ships (ShippingID, EmployeeID, InstID, OrderID) VALUES
+	(1, 1, 1, 10011),
+    (2, 2, 2, 10012),
+    (3, 2, 3, 10013);
+INSERT INTO Ships (ShippingID, ShippingAddress, EmployeeID, OrderID) VALUES
+    (7, '901 Street, Landmark7, City7, State7, Pincode7', 7, 10017),
+    (8, '234 Street, Landmark8, City8, State8, Pincode8', 7, 10018);
+INSERT INTO Ships (ShippingID, ShippingAddress, EmployeeID, InstID, OrderID) VALUES
+	(6, '678 Street, Landmark6, City6, State6, Pincode6', 6, 6, 10016);
+INSERT INTO Ships (ShippingID, EmployeeID, OrderID) VALUES
+    (4, 4, 10014),
+    (5, 10, 10015),
+    (9, 9, 10019),
+    (10, 10, 10020);
+    
+    
+INSERT INTO FAQs (ForCustomers, ForEmployees) VALUES
+    ('How can I track my order?', 'How do I request time off?'),
+    ('What is your return policy?', 'How do I update my contact information?'),
+    ('Can I cancel my order?', 'How do I access my pay stubs?'),
+    ('How long does shipping take?', 'What are the company holidays?'),
+    ('What payment methods do you accept?', 'How do I report an issue with a customer order?'),
+    ('Do you offer international shipping?', 'How do I request training?'),
+    ('Are there any discounts available?', 'How do I request a day off?'),
+    ('How do I create an account?', 'How do I escalate a customer complaint?'),
+    ('What are your business hours?', 'How do I access the employee handbook?'),
+    ('Can I change my delivery address?', 'How do I request time off for a vacation?');
