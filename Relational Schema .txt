@@ -1,0 +1,206 @@
+Name = Prince Kumar (2022378)
+       Satyam (2022462) 
+       Siddhant Singh (2022497)
+  
+Contribution: Equally By All Members :)
+
+*****DBMS Submission-4******
+Blinkit!
+
+Relational Schema :
+Employee(EmployeeID {PK}, fname, mname, lname, {EmployeeAadhar}, EmployeeEmail, EmployeeJoiningDate, EmployeeLeavingDate, EmployeeSalary, LastUpdate)
+employeeContact(EmployeeID {FK}, Contact)
+Manager(ManagerID {PK}, ManagerEmail, ManagerContact, {EmployeeID} {FK}, LastUpdate)
+Branch(BranchID {PK}, streetNo, landmark, city, pincode, state, {ManagerID} {FK})
+branchContact(BranchID {FK}, Contact)
+WareHouse(WareHouseID {PK}, streetNo, landmark, city, pincode, state, BranchID {FK})
+warehouseContact(WareHouseID {FK}, Contact)
+worksAt(WareHouseID {FK}, {EmployeeID} {FK}, EmployeePost, workingStatus)
+ProductCategory(ProductCatID {PK}, ProductCatName, ProductCatDescription)
+Product(ProductID {PK}, ProductName, ProductPrice, ProductDecription, BrandName, ProductCatID {FK})
+stores(WareHouseID {FK}, ProductID {FK}, StockQty, ReturnableStatus)
+Customer(CustomerID {PK}, fname, mname, lname, CustomerDOB, Age, streetNo, landmark, city, pincode, state)
+customerContact(CustomerID {FK}, Contact)
+Payment(paymentID {PK}, paymentMethod, paymentDateTime)
+Cart(CartID {PK}, ProductQty, TotalCost, {CustomerID} {FK}, LastUpdate)
+addsTo(CartID {FK}, ProductID {FK}, modifiedAt)
+Tip(TipID {PK}, TipMoney)
+Orders(OrderID {PK}, OrderDateTime, TotalPayableAmount, OrderStatus, {paymentID} {FK}, CartID {FK}, TipID {FK})
+OrderList(OrderID {FK}, ProductID {FK}, ProductQty, ProductPrice, Price)
+Instructions(InstID {PK}, ToDate, Totime, CustomerContact, OtherDeliveryAddress, OtherInstructions, OtherID {FK})
+Ships(ShippingID {PK}, ShippingTime, ShippingAddress, EmployeeID {FK}, {InstID} {FK}, {OrderID} {FK})
+FAQs(ForCustomers, ForEmployees)
+
+where PK = Primary Key
+      FK = Foreign Key
+      {.} = Unique 
+
+SQL QUERIES : 
+
+1. List every branch and its associated warehouses under it :
+
+SQL QUERY : 
+SELECT b.BranchID, GROUP_CONCAT(w.WareHouseID) AS Warehouses
+FROM Branch b
+JOIN WareHouse w ON b.BranchID = w.BranchID
+GROUP BY b.BranchID;
+
+Relational :
+π_{b.BranchID,GROUP_CONCAT(w.WareHouseID) AS Warehouses} (γ_{b.BranchID} (σ_{b.BranchID=w.BranchID} (b⋈w)))
+
+2. List all employees who are currently working as managers along with their contact details:
+
+SQL QUERY :     
+SELECT E.fname, E.mname, E.lname, M.ManagerEmail, M.ManagerContact
+FROM Employee E
+JOIN Manager M ON E.EmployeeID = M.EmployeeID;
+
+Relational :
+π_{E.fname,E.mname,E.lname,M.ManagerEmail,M.ManagerContact} (σ_{E.EmployeeID=M.EmployeeID} (E⋈M))
+
+
+3. Deleting manager whose ManagerID is 1001 and removing his details from Employee table 
+
+SQL QUERY : 
+delete from employee where EmployeeID=(Select EmployeeID from manager where ManagerID=1001);
+
+Relational :
+Employee←Employee−σ_{ManagerID=1001}(Manager⋈Employee)
+
+4. Updating price of Product (ProductID = 6)
+
+SQL Query : 
+UPDATE Product
+SET ProductPrice = 49999.99
+WHERE ProductID = 6;
+
+Relational :
+σ_{ProductID=6}(Product)→ProductPrice=49999.99
+
+5. Retrieve all customers who have ordered products from the 'Clothing' category:
+
+SQL Query : 
+SELECT DISTINCT c.CustomerID, c.fname, c.mname, c.lname
+FROM Customer c
+JOIN Cart ct ON c.CustomerID = ct.CustomerID
+JOIN Orders o ON ct.CartID = o.CartID
+JOIN OrderList ol ON o.OrderID = ol.OrderID
+JOIN Product p ON ol.ProductID = p.ProductID
+JOIN ProductCategory pc ON p.ProductCatID = pc.ProductCatID
+WHERE pc.ProductCatName = 'Clothing';
+
+Relational :
+π_{c.CustomerID,c.fname,c.mname,c.lname} (σ_{pc.ProductCatName= ′Clothing′} (Customer⋈Cart⋈Orders⋈OrderList⋈Product⋈ProductCategory))
+
+6. Listing the name and contact details (contact number for every different mobile no.) of customers who have placed orders paid via 'Cash On Delivery':
+
+SQL Query :
+SELECT c.fname, c.mname, c.lname, cc.contact
+FROM Customer c
+JOIN customerContact cc ON c.CustomerID = cc.CustomerID
+JOIN Cart ON c.CustomerID = Cart.CustomerID
+JOIN orders ON Cart.CartID = orders.CartID
+JOIN payment ON orders.paymentID = payment.paymentID
+WHERE payment.paymentMethod = 'Cash On Delivery';
+
+Relational :
+π_{fname,mname,lname,contact} ((σ_{paymentMethod=’Cash On Delivery’} (Customer⋈(customerContact⋈(Cart⋈orders⋈payment))))
+
+
+7. The average product price in each product category
+
+SQL Query :
+SELECT PC.ProductCatName, AVG(ProductPrice) AS AvgProductPrice
+FROM Product P
+JOIN ProductCategory PC ON P.ProductCatID = PC.ProductCatID
+GROUP By PC.ProductCatName;
+
+Relational : 
+π_{PC.ProductCatName,AVG(P.ProductPrice)}(σ_{P.ProductCatID=PC.ProductCatID}(P⋈_{P.ProductCatID=PC.ProductCatID}PC))
+
+8. Fetching the names of employees who are currently 'on holiday':
+
+SQL QUERY : 
+SELECT fname, mname, lname
+FROM Employee
+WHERE EmployeeID IN (
+    SELECT EmployeeID
+    FROM worksAt
+    WHERE WorkingStatus = 'on holiday'
+); 
+
+Relational : 
+π_{fname, mname, lname} (Employee ⨝ (σ_{WorkingStatus='on holiday'}(worksAt)))
+
+
+9. Fetching Customer Details Using Specific OrderID : 
+
+SQL QUERY : 
+SELECT c.CustomerID, c.fname, c.mname, c.lname
+FROM Orders o
+JOIN Cart ct ON o.CartID = ct.CartID
+JOIN Customer c ON ct.CustomerID = c.CustomerID
+WHERE o.OrderID = 10011;
+
+Relational :
+π_{c.CustomerID,c.fname,c.mname,c.lname}(σ_{o.OrderID=10011}(Orders⋈Cart⋈Customer))
+
+
+10. Fetching warehouseID and productID which are not in stock or have 0 qty left in their respective warehouse. 
+
+SQL QUERY :
+SELECT w.WareHouseID, s.ProductID
+FROM WareHouse w
+JOIN stores s ON w.WareHouseID = s.WareHouseID
+WHERE s.StockQty = 0;
+
+Relational : 
+π_{WareHouseID, ProductID}(σ_{StockQty=0}(WareHouse⋈stores))
+
+
+
+Quries related to Constraints : 
+
+1. Foreign Key Violation 
+- INSERT INTO Orders (OrderID, totalPayableAmt, CartID, TipID, paymentID)
+  VALUES (11005, 15500, 10, 10, 13);
+// can't update a child row foreign key constraints failed
+
+2. Checked Constraints Violation : 
+- UPDATE Employee SET EmployeeAadhar = 123456789 WHERE EmployeeID = 2;
+// Aadhar no. is less than 12 digits
+
+- INSERT INTO Manager (ManagerID, ManagerEmail, ManagerContact, EmployeeID)
+  VALUES
+    (1001, 'manager1@example.com', 9876543, 1);
+// Manager contact no. is less than 10 digits
+
+- UPDATE EmployeeContact SET contact = 12345 WHERE EmployeeID = 2;
+// EMployee contact no. is less than 10 digits
+  
+- INSERT INTO Cart (CartID, ProductQty, TotalCost, CustomerID) VALUES (1, 1, -10.99, 1);
+// Total Cost Can't be negative
+
+- INSERT INTO OrderList (OrderID, ProductID, ProductQty, ProductPrice) VALUES
+    (10013, 1, 0, 999.9);
+// becuase ProductQty ensures atleast 1 product quantity
+
+- INSERT INTO Orders (OrderID, totalPayableAmt, CartID, TipID, paymentID)
+  VALUES (11005, 15500, 10, 10, 13);
+// Duplicate Entry Data Violation
+
+- INSERT INTO Ships (ShippingID, ShippingAddress, EmployeeID, InstID, OrderID)
+  VALUES (11,"123",15,6,10011);
+// Duplicate Entry Data Violation
+
+- INSERT INTO ships 
+  VALUES (11,15,6,10011);
+//  Column Count Doesn't Match
+
+- SELECT * FROM Employee e LEFT JOIN Manager m ON e.ManagerID = m.ManagerID WHERE m.ManagerID IS NULL;
+// Violation: The EmployeeManagerFK constraint ensures that the manager ID in the Employee table references a valid manager ID in the Manager table.
+
+
+
+
+
