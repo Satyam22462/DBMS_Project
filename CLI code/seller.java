@@ -464,7 +464,36 @@ private static void addStockToWarehouse(Connection connection, int productID, in
         }
     }
 
-    //.............para1
+  private static void printProducts(Connection connection) {
+        try {
+            // Query to select all rows from Product table
+            String query = "SELECT * FROM Product";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Print the header
+            System.out.println("Product ID | Product Name | Product Price | Product Description | Brand Name | Product Category ID");
+            System.out.println("----------------------------------------------------------------------------------------------------");
+
+            // Print each row of the result set
+            while (resultSet.next()) {
+                int productID = resultSet.getInt("ProductID");
+                String productName = resultSet.getString("ProductName");
+                double productPrice = resultSet.getDouble("ProductPrice");
+                String productDescription = resultSet.getString("ProductDescription");
+                String brandName = resultSet.getString("Brandname");
+                int productCatID = resultSet.getInt("ProductCatID");
+
+                // Print the row
+                System.out.printf("%-10s | %-12s | %-13s | %-20s | %-10s | %-18s%n", productID, productName, productPrice, productDescription, brandName, productCatID);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     private static void printProductCategoriesByWarehouse(Connection connection, int managerID) {
