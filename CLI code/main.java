@@ -603,6 +603,51 @@ public class main {
     }
 
     //here5..................
+    private static void displayProductCategories(Connection connection, List<Integer> productcatIDs) {
+        try {
+            String query = "SELECT * FROM ProductCategory";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            System.out.println("Product Categories:");
+            System.out.println("Product Category ID | Product Category Name | Product Category Description");
+            System.out.println("--------------------------------------------------------------------------");
+            while (resultSet.next()) {
+                int categoryID = resultSet.getInt("ProductCatID");
+                productcatIDs.add(categoryID);
+                String categoryName = resultSet.getString("ProductCatName");
+                String categoryDes = resultSet.getString("ProductCatDescription");
+//                System.out.println(categoryID + ". " + categoryName);
+                System.out.printf("%-20s  | %-20s  | %-30s%n", categoryID, categoryName, categoryDes);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void displayProductsByCategory(Connection connection, int productCatID, List<Integer> productIDs) throws SQLException {
+        String query = "SELECT * FROM Product WHERE ProductCatID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, productCatID);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            int productID = resultSet.getInt("ProductID");
+            productIDs.add(productID);
+            String productName = resultSet.getString("ProductName");
+            double productPrice = resultSet.getDouble("ProductPrice");
+            String productDescription = resultSet.getString("ProductDescription");
+            String brandName = resultSet.getString("Brandname");
+            System.out.println("Product ID: " + productID);
+            System.out.println("Product Name: " + productName);
+            System.out.println("Product Price: " + productPrice);
+            System.out.println("Product Description: " + productDescription);
+            System.out.println("Brand Name: " + brandName);
+            System.out.println("---------------------");
+        }
+        resultSet.close();
+        statement.close();
+    }
 
     private static void displayAllProducts(Connection connection, List<Integer> A_productIDs) throws SQLException {
         String query = "SELECT * FROM product";
