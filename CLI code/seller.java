@@ -494,7 +494,61 @@ private static void addStockToWarehouse(Connection connection, int productID, in
         }
     }
 
+    private static void printProducts1(Connection connection, int managerID) {
+        try {
+            // Retrieve the branch ID of the manager
+            String branchQuery = "SELECT BranchID FROM branch WHERE ManagerID = ?";
+            PreparedStatement branchStatement = connection.prepareStatement(branchQuery);
+            branchStatement.setInt(1, managerID);
+            ResultSet branchResult = branchStatement.executeQuery();
 
+            int branchID = -1;
+            if (branchResult.next()) {
+                branchID = branchResult.getInt("BranchID");
+            } else {
+                System.out.println("No branch found for the manager.");
+                return;
+            }
+
+            branchStatement.close();
+
+            // Query to select product details along with the number of stocks left in each warehouse under the branch
+            String query = "SELECT P.ProductID, P.ProductName, P.ProductPrice, P.ProductDescription, P.BrandName, P.ProductCatID, " +
+                    "W.WarehouseID, COALESCE(SUM(S.stockQty), 0) AS StocksLeft " +
+                    "FROM Product P " +
+                    "CROSS JOIN Warehouse W " +
+                    "LEFT JOIN stores S ON P.ProductID = S.productID AND W.WarehouseID = S.warehouseID " +
+                    "WHERE W.BranchID = ? " +
+                    "GROUP BY P.ProductID, W.WarehouseID";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, branchID);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Print the header
+            System.out.println("Product ID | Product Name | Product Price | Product Description | Brand Name | Product Category ID | Warehouse ID | Stocks Left");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+
+            // Print each row of the result set
+            while (resultSet.next()) {
+                int productID = resultSet.getInt("ProductID");
+                String productName = resultSet.getString("ProductName");
+                double productPrice = resultSet.getDouble("ProductPrice");
+                String productDescription = resultSet.getString("ProductDescription");
+                String brandName = resultSet.getString("BrandName");
+                int productCatID = resultSet.getInt("ProductCatID");
+                int warehouseID = resultSet.getInt("WarehouseID");
+                int stocksLeft = resultSet.getInt("StocksLeft");
+
+                // Print the row
+                System.out.printf("%-10s | %-12s | %-13s | %-20s | %-10s | %-18s | %-12s | %-10s%n", productID, productName, productPrice, productDescription, brandName, productCatID, warehouseID, stocksLeft);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static void printProductCategoriesByWarehouse(Connection connection, int managerID) {
         try {
