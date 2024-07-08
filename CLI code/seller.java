@@ -148,7 +148,25 @@ public class seller {
         }
     }
 
-    //here2................
+   public static void performInventoryAnalysis(Connection connection) {
+        try {
+            // Retrieve data from the database
+            Map<Integer, Map<Integer, Integer>> warehouseProductQuantities = getWarehouseProductQuantities(connection);
+
+            // Aggregate data
+            Map<Integer, Integer> totalProductQuantities = calculateTotalProductQuantities(warehouseProductQuantities);
+            Map<Integer, Integer> totalWarehouseQuantities = calculateTotalWarehouseQuantities(warehouseProductQuantities);
+
+            // Perform analysis
+            int maxQuantityProductID = getMaxQuantityProductID(totalProductQuantities);
+            int maxQuantityWarehouseID = getMaxQuantityWarehouseID(totalWarehouseQuantities);
+
+            // Display analysis results
+            displayAnalysisResults(maxQuantityProductID, maxQuantityWarehouseID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static Map<Integer, Map<Integer, Integer>> getWarehouseProductQuantities(Connection connection) throws SQLException {
         //retrieving product quantities per warehouse
@@ -192,7 +210,15 @@ public class seller {
         return totalWarehouseQuantities;
     }
 
-    //here3......
+private static int getMaxQuantityProductID(Map<Integer, Integer> totalProductQuantities) {
+        // Find the product with the highest total quantity
+        return Collections.max(totalProductQuantities.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
+    private static int getMaxQuantityWarehouseID(Map<Integer, Integer> totalWarehouseQuantities) {
+        // Find the warehouse with the highest total quantity
+        return Collections.max(totalWarehouseQuantities.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
 
     private static void displayAnalysisResults(int maxQuantityProductID, int maxQuantityWarehouseID) {
         System.out.println("Inventory Analysis:");
@@ -377,7 +403,30 @@ public class seller {
         }
     }
 
-    //here1....................
+private static void addStockToWarehouse(Connection connection, int productID, int stockQuantity, int warehouseID) {
+        try {
+            String stockUpdateQuery = "INSERT INTO stores (warehouseID, productID, stockQty, ReturnableStatus) VALUES (?, ?, ?, ?)";
+            PreparedStatement stockStatement = connection.prepareStatement(stockUpdateQuery);
+            stockStatement.setInt(1, warehouseID);
+            stockStatement.setInt(2, productID);
+            stockStatement.setInt(3, stockQuantity);
+            stockStatement.setString(4, "Yes");
+            stockStatement.executeUpdate();
+            stockStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static int getNextProductID(Connection connection) throws SQLException {
+        String query = "SELECT MAX(ProductID) FROM Product";
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getInt(1) + 1;
+        }
+        return 1; // If no record found, start from 1
+    }
 
     private static void remove_product_cat(Connection connection, ScannerClass sc){
         try{
