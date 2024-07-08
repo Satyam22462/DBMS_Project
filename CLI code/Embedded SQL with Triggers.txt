@@ -1,0 +1,859 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Mar 31, 2024 at 09:19 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `clone2`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `addsto`
+--
+
+CREATE TABLE `addsto` (
+  `CartID` int(11) NOT NULL,
+  `ProductID` int(11) NOT NULL,
+  `productQty` int(11) NOT NULL,
+  `ModifiedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `warehouseID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Triggers `addsto`
+--
+DELIMITER $$
+CREATE TRIGGER `update_cart_trigger` AFTER INSERT ON `addsto` FOR EACH ROW BEGIN
+    DECLARE total_quantity INT;
+    DECLARE total_cost DECIMAL(10, 2);
+
+    -- Calculate total quantity and total cost for the cartID
+    SELECT SUM(productQty), SUM(productQty * ProductPrice)
+    INTO total_quantity, total_cost
+    FROM addsTo a
+    INNER JOIN product p ON a.productID = p.productID
+    WHERE a.cartID = NEW.cartID;
+
+    -- Update the cart table with the calculated values
+    UPDATE cart
+    SET productQty = total_quantity, TotalCost = total_cost
+    WHERE cartID = NEW.cartID;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branch`
+--
+
+CREATE TABLE `branch` (
+  `BranchID` int(11) NOT NULL,
+  `streetNo` varchar(50) NOT NULL,
+  `landmark` varchar(50) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `pincode` int(11) NOT NULL,
+  `ManagerID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `branch`
+--
+
+INSERT INTO `branch` (`BranchID`, `streetNo`, `landmark`, `city`, `state`, `pincode`, `ManagerID`) VALUES
+(1201, '123', 'Main Street', 'Mumbai', 'Maharashtra', 400001, 1001),
+(1202, '456', 'Central Avenue', 'Delhi', 'Delhi', 110001, 1004),
+(1203, '789', 'Park Road', 'Bangalore', 'Karnataka', 560001, 1002),
+(1204, '1011', 'High Street', 'Kolkata', 'West Bengal', 700001, 1003),
+(1205, '1213', 'Market Street', 'Chennai', 'Tamil Nadu', 600001, 1005);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branchcontact`
+--
+
+CREATE TABLE `branchcontact` (
+  `BranchID` int(11) NOT NULL,
+  `contact` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `branchcontact`
+--
+
+INSERT INTO `branchcontact` (`BranchID`, `contact`) VALUES
+(1201, 7654321098),
+(1201, 8765432109),
+(1201, 9876543210),
+(1201, 9876543211),
+(1202, 5432109876),
+(1202, 5432109877),
+(1202, 6543210987),
+(1202, 7654321099),
+(1203, 2109876543),
+(1203, 3210987654),
+(1203, 4321098765),
+(1204, 1098765432),
+(1205, 1234567890),
+(1205, 1234567891);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `CartID` int(11) NOT NULL,
+  `ProductQty` int(11) NOT NULL,
+  `TotalCost` double NOT NULL,
+  `CustomerID` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `CustomerID` int(11) NOT NULL,
+  `fname` varchar(30) NOT NULL,
+  `mname` varchar(30) DEFAULT NULL,
+  `lname` varchar(30) NOT NULL,
+  `CustomerDOB` date NOT NULL,
+  `CustomerAge` int(11) GENERATED ALWAYS AS (2024 - year(`CustomerDOB`)) VIRTUAL,
+  `streetNo` varchar(50) NOT NULL,
+  `landmark` varchar(50) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `pincode` int(11) NOT NULL,
+  `email` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customercontact`
+--
+
+CREATE TABLE `customercontact` (
+  `CustomerID` int(11) NOT NULL,
+  `contact` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customerpassword`
+--
+
+CREATE TABLE `customerpassword` (
+  `email` varchar(30) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `CustomerID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee`
+--
+
+CREATE TABLE `employee` (
+  `EmployeeID` int(11) NOT NULL,
+  `fname` varchar(30) NOT NULL,
+  `mname` varchar(30) DEFAULT NULL,
+  `lname` varchar(30) NOT NULL,
+  `EmployeeAadhar` bigint(20) NOT NULL,
+  `EmployeeEmail` varchar(50) DEFAULT 'Not Available',
+  `EmployeeJoiningDate` datetime NOT NULL DEFAULT current_timestamp(),
+  `EmployeeLeavingDate` datetime DEFAULT NULL,
+  `EmployeeSalary` double DEFAULT 15000,
+  `LastUpdate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`EmployeeID`, `fname`, `mname`, `lname`, `EmployeeAadhar`, `EmployeeEmail`, `EmployeeJoiningDate`, `EmployeeLeavingDate`, `EmployeeSalary`, `LastUpdate`) VALUES
+(1, 'Rahul', 'Kumar', 'Sharma', 123456789012, 'rahul@example.com', '2024-03-30 01:28:10', NULL, 25000, '2024-03-29 19:58:10'),
+(2, 'Priya', 'Singh', 'Yadav', 234567890123, 'priya@example.com', '2024-03-30 01:28:10', NULL, 36000, '2024-03-29 19:58:10'),
+(3, 'Amit', 'Kumar', 'Verma', 345678901234, 'amit@example.com', '2024-03-30 01:28:10', NULL, 32000, '2024-03-29 19:58:10'),
+(4, 'Sneha', 'Rani', 'Patel', 456789012345, 'sneha@example.com', '2024-03-30 01:28:10', NULL, 120000, '2024-03-29 19:58:10'),
+(5, 'Rajesh', NULL, 'Kumar', 567890123456, 'Not Available', '2023-04-20 00:00:00', NULL, 15000, '2024-03-29 19:58:10'),
+(6, 'Anjali', NULL, 'Gupta', 678901234567, 'Not Available', '2023-05-25 00:00:00', NULL, 15000, '2024-03-29 19:58:10'),
+(7, 'Vikas', NULL, 'Singh', 789012345678, 'Not Available', '2023-06-30 00:00:00', NULL, 15000, '2024-03-29 19:58:10'),
+(8, 'Sunita', NULL, 'Yadav', 890123456789, 'Not Available', '2023-07-01 00:00:00', NULL, 15000, '2024-03-29 19:58:10'),
+(9, 'Alok', 'Kumar', 'Sharma', 901234567890, 'alok@example.com', '2023-08-05 00:00:00', '2024-03-12 00:00:00', 20000, '2024-03-29 19:58:10'),
+(10, 'Pooja', 'Devi', 'Mishra', 123123123123, 'pooja@example.com', '2023-09-10 00:00:00', NULL, 20000, '2024-03-29 19:58:10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employeecontact`
+--
+
+CREATE TABLE `employeecontact` (
+  `EmployeeID` int(11) NOT NULL,
+  `contact` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employeecontact`
+--
+
+INSERT INTO `employeecontact` (`EmployeeID`, `contact`) VALUES
+(1, 9876543210),
+(1, 9876543211),
+(2, 8765432109),
+(3, 7654321099),
+(3, 9876543211),
+(4, 6543210987),
+(5, 5432109876),
+(6, 4321098765),
+(7, 3210987654),
+(8, 2109876543),
+(9, 1098765432),
+(10, 1234567890),
+(10, 1234567891);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faqs`
+--
+
+CREATE TABLE `faqs` (
+  `ForCustomers` varchar(650) DEFAULT NULL,
+  `ForEmployees` varchar(650) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `instructions`
+--
+
+CREATE TABLE `instructions` (
+  `InstID` int(11) NOT NULL,
+  `toDate` date DEFAULT NULL,
+  `totime` time DEFAULT NULL,
+  `customerContact` bigint(20) DEFAULT NULL,
+  `otherDelAddress` varchar(100) DEFAULT NULL,
+  `otherInstruction` varchar(100) DEFAULT NULL,
+  `OrderID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `manager`
+--
+
+CREATE TABLE `manager` (
+  `ManagerID` int(11) NOT NULL,
+  `ManagerEmail` varchar(50) NOT NULL,
+  `ManagerContact` bigint(20) NOT NULL,
+  `EmployeeID` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `password` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `manager`
+--
+
+INSERT INTO `manager` (`ManagerID`, `ManagerEmail`, `ManagerContact`, `EmployeeID`, `LastUpdate`, `password`) VALUES
+(1001, 'manager1@example.com', 9876543210, 1, '2024-03-29 19:59:59', 'manager1001'),
+(1002, 'manager2@example.com', 8765432109, 2, '2024-03-29 19:59:59', 'manager1002'),
+(1003, 'manager3@example.com', 7654321098, 4, '2024-03-29 19:59:59', 'manager1003'),
+(1004, 'manager4@example.com', 6543210987, 6, '2024-03-29 19:59:59', 'manager1004'),
+(1005, 'manager5@example.com', 5432109876, 10, '2024-03-29 19:59:59', 'manager1005');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderlist`
+--
+
+CREATE TABLE `orderlist` (
+  `OrderID` int(11) NOT NULL,
+  `ProductID` int(11) NOT NULL,
+  `ProductQty` int(11) NOT NULL,
+  `ProductPrice` double NOT NULL,
+  `Price` double GENERATED ALWAYS AS (`ProductQty` * `ProductPrice`) VIRTUAL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `OrderID` int(11) NOT NULL,
+  `orderTiming` timestamp NOT NULL DEFAULT current_timestamp(),
+  `totalPayableAmt` double NOT NULL,
+  `orderStatus` enum('Processing','Confirmed','On the way','Delivered','Cancelled') DEFAULT 'Processing',
+  `CartID` int(11) NOT NULL,
+  `TipID` int(11) DEFAULT NULL,
+  `paymentID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Triggers `orders`
+--
+DELIMITER $$
+CREATE TRIGGER `insert_orderlist_trigger` AFTER INSERT ON `orders` FOR EACH ROW BEGIN
+    DECLARE cart_id INT;
+    
+    -- Retrieve the cartID based on the newly inserted order
+    SELECT cartID INTO cart_id FROM Orders WHERE OrderID = NEW.OrderID;
+
+    -- Insert data into the OrderList table based on the retrieved cartID
+    INSERT INTO OrderList (OrderID, ProductID, ProductQty, ProductPrice)
+    SELECT NEW.OrderID, addsTo.productID, addsTo.productQty, product.ProductPrice
+    FROM addsTo
+    INNER JOIN product ON addsTo.productID = product.productID
+    WHERE addsTo.cartID = cart_id;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment`
+--
+
+CREATE TABLE `payment` (
+  `paymentID` int(11) NOT NULL,
+  `paymentMethod` enum('Cash On Delivery','Net Banking','UPI','EMI') DEFAULT 'UPI',
+  `paymentDateTime` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `ProductID` int(11) NOT NULL,
+  `ProductName` varchar(50) NOT NULL,
+  `ProductPrice` double NOT NULL,
+  `ProductDescription` varchar(100) DEFAULT 'Description Not Available',
+  `BrandName` varchar(50) DEFAULT 'Blinkit',
+  `ProductCatID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`ProductID`, `ProductName`, `ProductPrice`, `ProductDescription`, `BrandName`, `ProductCatID`) VALUES
+(1, 'Smartphone', 9999.99, 'The latest smartphone model', 'Samsung', 4),
+(2, 'T-shirt', 29.99, 'Comfortable cotton T-shirt', 'Nike', 3),
+(3, 'Hoddie', 400, 'feal the comffy..', 'Adidas', 3),
+(4, 'Office Chair', 199.99, 'Ergonomic office chair', 'Herman Miller', 6),
+(5, 'Lego Set', 49.99, 'Building blocks for creative play', 'LEGO', 7),
+(6, 'Laptop', 1499.99, 'Powerful laptop for work and entertainment', 'Dell', 4),
+(7, 'Jeans', 39.99, 'Classic denim jeans', 'Levis', 3),
+(8, 'Cookbook', 12.99, 'Collection of delicious recipes', 'Penguin Random House', 5),
+(9, 'Desk Lamp', 29.99, 'Adjustable desk lamp for study or work', 'IKEA', 4),
+(10, 'Board Game', 24.99, 'Fun family board game', 'Hasbro', 7),
+(11, 'Harry Potter Book', 19.99, 'First book in the Harry Potter series', 'Scholastic', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `productcategory`
+--
+
+CREATE TABLE `productcategory` (
+  `ProductCatID` int(11) NOT NULL,
+  `ProductCatName` varchar(50) NOT NULL,
+  `ProductCatDescription` varchar(100) DEFAULT 'Not Available'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `productcategory`
+--
+
+INSERT INTO `productcategory` (`ProductCatID`, `ProductCatName`, `ProductCatDescription`) VALUES
+(2, 'Stationary', ''),
+(3, 'Clothing', 'All clothing are available '),
+(4, 'Electronics', 'Electronic devices and gadgets'),
+(5, 'Books', 'Literature and educational materials'),
+(6, 'Furniture', 'Home and office furniture'),
+(7, 'Toys', 'Childrens toys and games'),
+(8, 'milk', 'this is a milk');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ships`
+--
+
+CREATE TABLE `ships` (
+  `ShippingID` int(11) NOT NULL,
+  `ShippingTime` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ShippingAddress` varchar(100) DEFAULT NULL,
+  `EmployeeID` int(11) NOT NULL,
+  `InstID` int(11) DEFAULT NULL,
+  `OrderID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stores`
+--
+
+CREATE TABLE `stores` (
+  `WareHouseID` int(11) NOT NULL,
+  `ProductID` int(11) NOT NULL,
+  `StockQty` int(11) DEFAULT 100,
+  `ReturnableStatus` enum('Yes','No') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stores`
+--
+
+INSERT INTO `stores` (`WareHouseID`, `ProductID`, `StockQty`, `ReturnableStatus`) VALUES
+(11101, 1, 28, 'Yes'),
+(11101, 2, 99, 'No'),
+(11102, 3, 34, 'Yes'),
+(11102, 4, 89, 'Yes'),
+(11103, 5, 161, 'No'),
+(11103, 6, 114, 'Yes'),
+(11104, 7, 75, 'No'),
+(11104, 8, 89, 'Yes'),
+(11105, 9, 96, 'Yes'),
+(11113, 6, 109, 'Yes'),
+(11113, 7, 119, 'Yes'),
+(11114, 7, 49, 'No'),
+(11114, 8, 58, 'Yes'),
+(11115, 9, 20, 'Yes'),
+(11115, 10, 39, 'No');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tip`
+--
+
+CREATE TABLE `tip` (
+  `TipID` int(11) NOT NULL,
+  `TipMoney` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `warehouse`
+--
+
+CREATE TABLE `warehouse` (
+  `WareHouseID` int(11) NOT NULL,
+  `streetNo` varchar(50) NOT NULL,
+  `landmark` varchar(50) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `pincode` int(11) NOT NULL,
+  `BranchID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `warehouse`
+--
+
+INSERT INTO `warehouse` (`WareHouseID`, `streetNo`, `landmark`, `city`, `state`, `pincode`, `BranchID`) VALUES
+(11101, '123', 'Main Street', 'Mumbai', 'Maharashtra', 400001, 1201),
+(11102, '456', 'Central Avenue', 'Delhi', 'Delhi', 110001, 1201),
+(11103, '789', 'Park Road', 'Bangalore', 'Karnataka', 560001, 1201),
+(11104, '1011', 'High Street', 'Kolkata', 'West Bengal', 700001, 1201),
+(11105, '1213', 'Market Street', 'Chennai', 'Tamil Nadu', 600001, 1202),
+(11106, '1415', 'Broadway', 'Hyderabad', 'Telangana', 500001, 1202),
+(11107, '1617', 'Park Avenue', 'Pune', 'Maharashtra', 411001, 1202),
+(11108, '1819', 'Lake Street', 'Ahmedabad', 'Gujarat', 380001, 1202),
+(11109, '2021', 'Oak Street', 'Jaipur', 'Rajasthan', 302001, 1203),
+(11110, '2223', 'Elm Avenue', 'Lucknow', 'Uttar Pradesh', 226001, 1203),
+(11111, '2425', 'Maple Street', 'Patna', 'Bihar', 800001, 1203),
+(11112, '2627', 'Pine Avenue', 'Kochi', 'Kerala', 682001, 1204),
+(11113, '2829', 'Cedar Street', 'Guwahati', 'Assam', 781001, 1204),
+(11114, '3031', 'Willow Avenue', 'Bhopal', 'Madhya Pradesh', 462001, 1205),
+(11115, '3233', 'Birch Street', 'Raipur', 'Chhattisgarh', 492001, 1205);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `warehousecontact`
+--
+
+CREATE TABLE `warehousecontact` (
+  `WareHouseID` int(11) NOT NULL,
+  `contact` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `warehousecontact`
+--
+
+INSERT INTO `warehousecontact` (`WareHouseID`, `contact`) VALUES
+(11101, 9876543210),
+(11101, 9876543211),
+(11102, 8765432109),
+(11103, 7654321098),
+(11103, 7654321099),
+(11104, 6543210987),
+(11105, 5432109876),
+(11105, 5432109877),
+(11106, 4321098765),
+(11107, 3210987654),
+(11108, 2109876543),
+(11109, 1098765432),
+(11110, 1234567890),
+(11111, 1234567891),
+(11112, 1234567892),
+(11113, 1234567890),
+(11113, 1234567893),
+(11114, 1234567894),
+(11115, 1234567895);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `worksat`
+--
+
+CREATE TABLE `worksat` (
+  `EmployeeID` int(11) NOT NULL,
+  `WareHouseID` int(11) NOT NULL,
+  `EmployeePost` enum('Delivery Man','Manager','Packaging Man','Worker','Head Employee') DEFAULT 'Worker',
+  `WorkingStatus` enum('Busy','Free','on holiday','Working') DEFAULT 'Working'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `worksat`
+--
+
+INSERT INTO `worksat` (`EmployeeID`, `WareHouseID`, `EmployeePost`, `WorkingStatus`) VALUES
+(1, 11101, 'Head Employee', 'Working'),
+(2, 11101, 'Delivery Man', 'Busy'),
+(3, 11103, 'Packaging Man', 'Free'),
+(4, 11104, 'Delivery Man', 'on holiday'),
+(5, 11105, 'Head Employee', 'Working'),
+(6, 11101, 'Manager', 'on holiday'),
+(7, 11105, 'Manager', 'Busy'),
+(8, 11105, 'Packaging Man', 'Free'),
+(9, 11105, 'Worker', 'Working'),
+(10, 11110, 'Delivery Man', 'Free');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `addsto`
+--
+ALTER TABLE `addsto`
+  ADD KEY `CartID` (`CartID`),
+  ADD KEY `ProductID` (`ProductID`),
+  ADD KEY `fk_addsTo_warehouse` (`warehouseID`);
+
+--
+-- Indexes for table `branch`
+--
+ALTER TABLE `branch`
+  ADD PRIMARY KEY (`BranchID`),
+  ADD UNIQUE KEY `ManagerID` (`ManagerID`);
+
+--
+-- Indexes for table `branchcontact`
+--
+ALTER TABLE `branchcontact`
+  ADD PRIMARY KEY (`BranchID`,`contact`);
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`CartID`),
+  ADD UNIQUE KEY `CustomerID` (`CustomerID`);
+
+--
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`CustomerID`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `customercontact`
+--
+ALTER TABLE `customercontact`
+  ADD PRIMARY KEY (`CustomerID`,`contact`);
+
+--
+-- Indexes for table `customerpassword`
+--
+ALTER TABLE `customerpassword`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Indexes for table `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`EmployeeID`),
+  ADD UNIQUE KEY `EmployeeAadhar` (`EmployeeAadhar`);
+
+--
+-- Indexes for table `employeecontact`
+--
+ALTER TABLE `employeecontact`
+  ADD PRIMARY KEY (`EmployeeID`,`contact`);
+
+--
+-- Indexes for table `instructions`
+--
+ALTER TABLE `instructions`
+  ADD PRIMARY KEY (`InstID`),
+  ADD KEY `OrderID` (`OrderID`);
+
+--
+-- Indexes for table `manager`
+--
+ALTER TABLE `manager`
+  ADD PRIMARY KEY (`ManagerID`),
+  ADD UNIQUE KEY `EmployeeID` (`EmployeeID`);
+
+--
+-- Indexes for table `orderlist`
+--
+ALTER TABLE `orderlist`
+  ADD KEY `OrderID` (`OrderID`),
+  ADD KEY `ProductID` (`ProductID`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`OrderID`),
+  ADD UNIQUE KEY `paymentID` (`paymentID`),
+  ADD KEY `CartID` (`CartID`),
+  ADD KEY `TipID` (`TipID`);
+
+--
+-- Indexes for table `payment`
+--
+ALTER TABLE `payment`
+  ADD PRIMARY KEY (`paymentID`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `ProductCatID` (`ProductCatID`);
+
+--
+-- Indexes for table `productcategory`
+--
+ALTER TABLE `productcategory`
+  ADD PRIMARY KEY (`ProductCatID`),
+  ADD UNIQUE KEY `ProductCatName` (`ProductCatName`);
+
+--
+-- Indexes for table `ships`
+--
+ALTER TABLE `ships`
+  ADD PRIMARY KEY (`ShippingID`),
+  ADD UNIQUE KEY `OrderID` (`OrderID`),
+  ADD UNIQUE KEY `InstID` (`InstID`),
+  ADD KEY `EmployeeID` (`EmployeeID`);
+
+--
+-- Indexes for table `stores`
+--
+ALTER TABLE `stores`
+  ADD PRIMARY KEY (`WareHouseID`,`ProductID`),
+  ADD KEY `ProductID` (`ProductID`);
+
+--
+-- Indexes for table `tip`
+--
+ALTER TABLE `tip`
+  ADD PRIMARY KEY (`TipID`);
+
+--
+-- Indexes for table `warehouse`
+--
+ALTER TABLE `warehouse`
+  ADD PRIMARY KEY (`WareHouseID`),
+  ADD KEY `BranchID` (`BranchID`);
+
+--
+-- Indexes for table `warehousecontact`
+--
+ALTER TABLE `warehousecontact`
+  ADD PRIMARY KEY (`WareHouseID`,`contact`);
+
+--
+-- Indexes for table `worksat`
+--
+ALTER TABLE `worksat`
+  ADD PRIMARY KEY (`EmployeeID`,`WareHouseID`),
+  ADD UNIQUE KEY `EmployeeID` (`EmployeeID`),
+  ADD KEY `WareHouseID` (`WareHouseID`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `addsto`
+--
+ALTER TABLE `addsto`
+  ADD CONSTRAINT `addsto_ibfk_1` FOREIGN KEY (`CartID`) REFERENCES `cart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `addsto_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_addsTo_warehouse` FOREIGN KEY (`warehouseID`) REFERENCES `warehouse` (`WareHouseID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `branch`
+--
+ALTER TABLE `branch`
+  ADD CONSTRAINT `branch_ibfk_1` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`ManagerID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `branchcontact`
+--
+ALTER TABLE `branchcontact`
+  ADD CONSTRAINT `branchcontact_ibfk_1` FOREIGN KEY (`BranchID`) REFERENCES `branch` (`BranchID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `customercontact`
+--
+ALTER TABLE `customercontact`
+  ADD CONSTRAINT `customercontact_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `customerpassword`
+--
+ALTER TABLE `customerpassword`
+  ADD CONSTRAINT `customerpassword_ibfk_1` FOREIGN KEY (`email`) REFERENCES `customer` (`email`);
+
+--
+-- Constraints for table `employeecontact`
+--
+ALTER TABLE `employeecontact`
+  ADD CONSTRAINT `employeecontact_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `instructions`
+--
+ALTER TABLE `instructions`
+  ADD CONSTRAINT `instructions_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `manager`
+--
+ALTER TABLE `manager`
+  ADD CONSTRAINT `manager_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `orderlist`
+--
+ALTER TABLE `orderlist`
+  ADD CONSTRAINT `orderlist_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderlist_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CartID`) REFERENCES `cart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`TipID`) REFERENCES `tip` (`TipID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`paymentID`) REFERENCES `payment` (`paymentID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`ProductCatID`) REFERENCES `productcategory` (`ProductCatID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ships`
+--
+ALTER TABLE `ships`
+  ADD CONSTRAINT `ships_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ships_ibfk_2` FOREIGN KEY (`InstID`) REFERENCES `instructions` (`InstID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ships_ibfk_3` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `stores`
+--
+ALTER TABLE `stores`
+  ADD CONSTRAINT `stores_ibfk_1` FOREIGN KEY (`WareHouseID`) REFERENCES `warehouse` (`WareHouseID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `stores_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `warehouse`
+--
+ALTER TABLE `warehouse`
+  ADD CONSTRAINT `warehouse_ibfk_1` FOREIGN KEY (`BranchID`) REFERENCES `branch` (`BranchID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `warehousecontact`
+--
+ALTER TABLE `warehousecontact`
+  ADD CONSTRAINT `warehousecontact_ibfk_1` FOREIGN KEY (`WareHouseID`) REFERENCES `warehouse` (`WareHouseID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `worksat`
+--
+ALTER TABLE `worksat`
+  ADD CONSTRAINT `worksat_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `worksat_ibfk_2` FOREIGN KEY (`WareHouseID`) REFERENCES `warehouse` (`WareHouseID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELIMITER $$
+--
+-- Events
+--
+CREATE DEFINER=`root`@`localhost` EVENT `update_order_event_30s` ON SCHEDULE AT '2024-03-31 08:39:12' ON COMPLETION PRESERVE DISABLE DO UPDATE Orders     SET orderStatus = 'Delivered'     WHERE OrderID = @orderID       AND orderStatus IN ('Confirmed', 'On the way', 'Processing')$$
+
+DELIMITER ;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
