@@ -262,44 +262,7 @@ private static int getMaxQuantityProductID(Map<Integer, Integer> totalProductQua
         }
     }
 
-    private static int getNextProductCatID(Connection connection) throws SQLException {
-        String query = "SELECT MAX(ProductCatID) FROM ProductCategory";
-        PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt(1) + 1;
-        }
-        return 1; // If no record found, start from 1
-    }
-    
-    private static void printProductCategories(Connection connection) {
-        try {
-            // Query to select all rows from ProductCategory table
-            String query = "SELECT * FROM ProductCategory";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
-            // Print the header
-            System.out.println("Product Category ID | Product Category Name | Product Category Description");
-            System.out.println("--------------------------------------------------------------------------");
-
-            // Print each row of the result set
-            while (resultSet.next()) {
-                int productCatID = resultSet.getInt("ProductCatID");
-                String productCatName = resultSet.getString("ProductCatName");
-                String productCatDescription = resultSet.getString("ProductCatDescription");
-
-                // Print the row
-                System.out.printf("%-20s  | %-20s  | %-30s%n", productCatID, productCatName, productCatDescription);
-            }
-
-            resultSet.close();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
+        
     private static int getNextProductCatID(Connection connection) throws SQLException {
         String query = "SELECT MAX(ProductCatID) FROM ProductCategory";
         PreparedStatement statement = connection.prepareStatement(query);
