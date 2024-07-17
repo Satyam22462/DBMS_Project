@@ -12,6 +12,6 @@
   * Step 4: Now open the Xampp > Start the Apache and MySQL > click on admin of Apache, you'll we redirected to php local host site.
   * Step 5: Copy all things form the Embedded SQL with Triggers.txt file.
   * Step 6: Now on the localhost website Create a Database > Go to that Database > SQL section > paste all things from step 5 > click on GO and ensure "enable foreign key check" checkbox should be enabled.
-   ### Note : You have successfully created a database.
+   ###### Note : You have successfully created a database.
   * Step 7: Run the main.java file in IntelliJ IDEA and here it's everything done.
-   ### Note : It's v1.0 so some functionalities are not implemented we're working on that.
+   ###### Note : It's v1.0 so some functionalities are not implemented we're working on that.
