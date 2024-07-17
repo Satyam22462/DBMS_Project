@@ -1,4 +1,4 @@
-* My CartMate
+#My CartMate
 * Clone of Blinkit a famous Grocery delivery app in CLI.
 * Tech Stack: Java, SQL
 
