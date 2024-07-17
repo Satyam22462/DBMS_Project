@@ -1,5 +1,6 @@
 # My CartMate
-* Clone of Blinkit a famous Grocery delivery app in CLI.
+* *Guide : Dr. Vikram Goyal* 
+* Replica of Blinkit a famous Grocery delivery app in CLI.
 * **Tech Stack:** Java, SQL
 
 * **Required Tools:** An IDE (IntelliJ IDEA would be best), Xampp, a JDBC which should be Platform Independent (mysql-connector-j-8.3.0 Download link(zip): https://downloads.mysql.com/archives/c-j/)
@@ -21,6 +22,8 @@
   * If you counter an error like mysql in xampp is not starting to fix this just close the process going on port(3306) or go to the task manager > processes > search mysql and end that task.
 
 
+
+#### Some Insights :
 ##### Intiial Menu :
 * on running you'll be presented with the following menu:
   1. Enter as Seller : Choosing 1 will show you the Seller/Admin Menu.
@@ -43,8 +46,17 @@
 * This menu will show you the basically the management of the products, ware houses, customer data etc.
   1. Add Product Category : By Choosing 1 you'll be asked to enter the name of the category you want to create and the description of that category.
   2. Add Product : By Choosing 1 firstly all the Product Categories Name with ID showned then you'll be asked to enter the name of the Product, Product Price, and then Product ID in which you want to add that product, Product Description, Brand Name, Stock Quantity after entering stock quantity all the warehouses that are present will be listed and you'll be asked to choose that you want to add that stock to specific warehouse or all the warehouses.
-  3.  
+  3. Remove product Category : By Choosing 3 you will be asked to enter the product category id you want to remove for the database.
+  4. Remove Product : Explore it by yourself
+  5. Update Product Details : (Under Development!!)
+  6. Update Product Category Details : (Under Development!!)
+  7. Inventory Analysis: By Choosing option 7 you will get the product id and warehouse id which has max stock qty.
+  8. Sneek In Inventory : By Choosing option 8 you will get the overall analysis of the inventory.
+  9. Add more stocks : Explore it by Yourself
+  10. Logout : Choosing option 10 will loged you out and send you to the main menu.
 
+  ##### Customer Login Menu:
+  In this menu you can buy any product, add products to cart, you can view last 5 orders made by you, etc.
 
 
 
