@@ -15,3 +15,40 @@
    ###### Note : You have successfully created a database.
   * Step 7: Run the main.java file in IntelliJ IDEA and here it's everything done.
    ###### Note : It's v1.0 so some functionalities are not implemented we're working on that.
+
+
+#### Error:
+  * If you counter an error like mysql in xampp is not starting to fix this just close the process going on port(3306) or go to the task manager > processes > search mysql and end that task.
+
+
+##### Intiial Menu :
+* on running you'll be presented with the following menu:
+    * 1. Enter as Seller : Choosing 1 will show you the Seller/Admin Menu.
+    * 2. Enter as Customer : Choosing 2 will show you the Customer Menu.
+    * 3. Exit : Choosing 3 will close the program.
+         
+##### Customer Menu : 
+* This menu will show you the following options: 
+   * 1. Login : Choosing 1 will ask you your gmail and password.
+   * 2. Sign Up : Choosing 2 will ask you your details to get signed up.
+   * 3. Back : Choosing 3 will lead you to the Main Menu.
+
+##### Admin/Seller Menu:
+* This menu will show you the following options:
+   * 1. Apply for Seller (Under Development!! plz wait for v2.0).
+   * 2. Login as Seller : Choosing 2 will ask you the seller email and password (seller email = manager1@example.com, password = manager1001).
+   * 3. Exit : Choosing 3 will lead you to Main Menu.
+    
+##### Seller Login Menu: 
+
+
+
+
+
+Contributors:
+Prince Kumar (prince22378@iiitd.ac.in)
+Satyam (satyam22462@iiitd.ac.in)
+Siddhant Singh (siddhant22497@iiitd.ac.in)
+Prajil Bhagat (prajil22359@iiitd.ac.in)
+
+for any query related to my cartmate just mail us.
