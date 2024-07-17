@@ -41,7 +41,9 @@
     
 ##### Seller Login Menu: 
 * This menu will show you the basically the management of the products, ware houses, customer data etc.
-  1. Add Product Category : By Choosing 1 you'll 
+  1. Add Product Category : By Choosing 1 you'll be asked to enter the name of the category you want to create and the description of that category.
+  2. Add Product : By Choosing 1 firstly all the Product Categories Name with ID showned then you'll be asked to enter the name of the Product, Product Price, and then Product ID in which you want to add that product, Product Description, Brand Name, Stock Quantity after entering stock quantity all the warehouses that are present will be listed and you'll be asked to choose that you want to add that stock to specific warehouse or all the warehouses.
+  3.  
 
 
 
