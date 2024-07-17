@@ -56,7 +56,7 @@
   10. Logout : Choosing option 10 will loged you out and send you to the main menu.
 
 ##### Customer Login Menu:
-  In this menu you can buy any product, add products to cart, you can view last 5 orders made by you, etc.
+  * In this menu you can buy any product, add products to cart, you can view last 5 orders made by you, etc.
 
 
 
