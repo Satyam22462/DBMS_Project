@@ -392,7 +392,11 @@ private static int getMaxQuantityProductID(Map<Integer, Integer> totalProductQua
                         for (Integer warehouseID : warehouseIDs) {
                             addStockToWarehouse(connection, productID, stockQuantity, warehouseID);
                         }
-                    } else {
+                    } else if( option == 3){
+                        System.out.println("Back");
+                        return;
+                    }
+                    else {
                         System.out.println("Invalid option selected.");
                     }
                 }
