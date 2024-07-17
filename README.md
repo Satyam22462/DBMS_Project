@@ -55,15 +55,15 @@
   9. Add more stocks : Explore it by Yourself
   10. Logout : Choosing option 10 will loged you out and send you to the main menu.
 
-  ##### Customer Login Menu:
+##### Customer Login Menu:
   In this menu you can buy any product, add products to cart, you can view last 5 orders made by you, etc.
 
 
 
-Contributors:
+**Contributors:**
 *Prince Kumar (prince22378@iiitd.ac.in)*
 *Satyam (satyam22462@iiitd.ac.in)*
 *Siddhant Singh (siddhant22497@iiitd.ac.in)*
 *Prajil Bhagat (prajil22359@iiitd.ac.in)*
-
+</br>
 for any query related to my cartmate just mail us.
