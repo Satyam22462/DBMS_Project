@@ -61,9 +61,9 @@
 
 
 Contributors:
-* Prince Kumar (prince22378@iiitd.ac.in)
-* Satyam (satyam22462@iiitd.ac.in)
-* Siddhant Singh (siddhant22497@iiitd.ac.in)
-* Prajil Bhagat (prajil22359@iiitd.ac.in)
+*Prince Kumar (prince22378@iiitd.ac.in)*
+*Satyam (satyam22462@iiitd.ac.in)*
+*Siddhant Singh (siddhant22497@iiitd.ac.in)*
+*Prajil Bhagat (prajil22359@iiitd.ac.in)*
 
-* for any query related to my cartmate just mail us.
+for any query related to my cartmate just mail us.
