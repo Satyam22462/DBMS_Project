@@ -29,26 +29,27 @@
          
 ##### Customer Menu : 
 * This menu will show you the following options: 
-   * 1. Login : Choosing 1 will ask you your gmail and password.
-   * 2. Sign Up : Choosing 2 will ask you your details to get signed up.
-   * 3. Back : Choosing 3 will lead you to the Main Menu.
+  1. Login : Choosing 1 will ask you your gmail and password.
+  2. Sign Up : Choosing 2 will ask you your details to get signed up.
+  3. Back : Choosing 3 will lead you to the Main Menu.
 
 ##### Admin/Seller Menu:
 * This menu will show you the following options:
-   * 1. Apply for Seller (Under Development!! plz wait for v2.0).
-   * 2. Login as Seller : Choosing 2 will ask you the seller email and password (seller email = manager1@example.com, password = manager1001).
-   * 3. Exit : Choosing 3 will lead you to Main Menu.
+  1. Apply for Seller (Under Development!! plz wait for v2.0).
+  2. Login as Seller : Choosing 2 will ask you the seller email and password (seller email = manager1@example.com, password = manager1001).
+  3. Exit : Choosing 3 will lead you to Main Menu.
     
 ##### Seller Login Menu: 
-
+* This menu will show you the basically the management of the products, ware houses, customer data etc.
+  1. Add Product Category : By Choosing 1 you'll 
 
 
 
 
 Contributors:
-Prince Kumar (prince22378@iiitd.ac.in)
-Satyam (satyam22462@iiitd.ac.in)
-Siddhant Singh (siddhant22497@iiitd.ac.in)
-Prajil Bhagat (prajil22359@iiitd.ac.in)
+* Prince Kumar (prince22378@iiitd.ac.in)
+* Satyam (satyam22462@iiitd.ac.in)
+* Siddhant Singh (siddhant22497@iiitd.ac.in)
+* Prajil Bhagat (prajil22359@iiitd.ac.in)
 
-for any query related to my cartmate just mail us.
+* for any query related to my cartmate just mail us.
