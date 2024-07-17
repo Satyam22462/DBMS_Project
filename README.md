@@ -23,9 +23,9 @@
 
 ##### Intiial Menu :
 * on running you'll be presented with the following menu:
-    * 1. Enter as Seller : Choosing 1 will show you the Seller/Admin Menu.
-    * 2. Enter as Customer : Choosing 2 will show you the Customer Menu.
-    * 3. Exit : Choosing 3 will close the program.
+  * 1. Enter as Seller : Choosing 1 will show you the Seller/Admin Menu.
+  * 2. Enter as Customer : Choosing 2 will show you the Customer Menu.
+  * 3. Exit : Choosing 3 will close the program.
          
 ##### Customer Menu : 
 * This menu will show you the following options: 
