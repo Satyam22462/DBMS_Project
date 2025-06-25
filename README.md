@@ -1,4 +1,4 @@
-# My CartMate
+# Shopper - StoreFront
 * *Guide : Dr. Vikram Goyal* 
 * Replica of Blinkit a famous Grocery delivery app in CLI.
 * **Tech Stack:** Java, SQL
