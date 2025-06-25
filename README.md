@@ -1,6 +1,6 @@
 # Shopper - StoreFront
 * *Guide : Dr. Vikram Goyal* 
-* Replica of Blinkit a famous Grocery delivery app in CLI.
+* Myntra Style - Ecommerce Website
 * **Tech Stack:** Java, SQL
 
 * **Required Tools:** An IDE (IntelliJ IDEA would be best), Xampp, a JDBC which should be Platform Independent (mysql-connector-j-8.3.0 Download link(zip): https://downloads.mysql.com/archives/c-j/)
